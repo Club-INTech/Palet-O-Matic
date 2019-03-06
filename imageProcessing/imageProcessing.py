@@ -68,7 +68,7 @@ def plot_histo(image, title):
     return
 
 
-#Changer le chemin pour les images
+#Changer le chemin pour les images : dépend du pc
 image_org = io.imread("../../image_palets_3.jpg")
 image_vert = filtre_vert_then_grey_then_otsu(image_org)
 
