@@ -1,7 +1,7 @@
 import socket
 import threading
 
-from src.com.listener import ListerThread
+from com.listener import ListerThread
 
 
 class ServerThread(threading.Thread):

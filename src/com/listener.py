@@ -1,5 +1,7 @@
 import threading
 
+from data.table import Table
+
 
 class ListerThread(threading.Thread):
 
@@ -11,18 +13,26 @@ class ListerThread(threading.Thread):
         print("[+] Nouveau thread pour %s %s" % (self.ip, self.port,))
 
     def run(self):
-        print("Connexion de %s %s" % (self.ip, self.port,))
-        self.send("Hello world")
-
-        message = self.recv()
-        if message != "b''":
-            print(message)
+        #print("Connexion de %s %s" % (self.ip, self.port,))
+        #self.send("Hello world")
+        self.send_palet_list(Table())
+        # message = self.recv()
+        # if message != "b''":
+        #     print(message)
 
     def recv(self):
+        header=('\x21',  '\x27')
         return self.clientsocket.recv(2048)
 
     def send(self, message):
+        header = ('\x21',  '\x27')
+        print(message)
+        message = header[0]+message+header[1]
+        print(message)
         self.clientsocket.send(message.encode())
 
     def close(self):
         self.clientsocket.close()
+
+    def send_palet_list(self, table):
+        self.send(table.to_json().__str__())
