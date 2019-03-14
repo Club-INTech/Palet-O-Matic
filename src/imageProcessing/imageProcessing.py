@@ -22,6 +22,16 @@ def filtre_rouge_then_grey_then_otsu(img_orig):
     return image_2_rouge / 255
 
 
+def filtre_rouge_then_grey(img_orig):
+    red_image = img_as_float(img_orig.copy())  # Make a copy
+    # On extrait le canal rouge
+    red_image[:, :, 1] = 0
+    red_image[:, :, 2] = 0
+    # On transforme en niveaux de gris
+    im_grey = img_as_float(rgb2gray(red_image))
+    return im_grey
+
+
 def filtre_bleu_then_grey_then_otsu(img_orig):
     blue_image = img_orig.copy()  # Make a copy
     blue_image[:, :, 0] = 0
@@ -37,6 +47,14 @@ def filtre_bleu_then_grey_then_otsu(img_orig):
     # On met à noir les pixels respectant le mask
     image_2_bleu[mask_2_bleu] = 0
     return image_2_bleu / 255
+
+
+def filtre_bleu_then_grey(img_orig):
+    blue_image = img_orig.copy()  # Make a copy
+    blue_image[:, :, 0] = 0
+    blue_image[:, :, 1] = 0
+    im_grey = rgb2gray(blue_image)
+    return im_grey
 
 
 def filtre_vert_then_grey_then_otsu(img_orig):
@@ -56,6 +74,14 @@ def filtre_vert_then_grey_then_otsu(img_orig):
     return image_2_vert / 255
 
 
+def filtre_vert_then_grey(img_orig):
+    green_image = img_orig.copy()  # Make a copy
+    green_image[:, :, 0] = 0
+    green_image[:, :, 2] = 0
+    im_grey = rgb2gray(green_image)
+    return im_grey
+
+
 import matplotlib.pyplot as plt
 from skimage.exposure import histogram
 
@@ -68,7 +94,7 @@ def plot_histo(image, title):
     return
 
 
-#Changer le chemin pour les images : dépend du chemin
+# Changer le chemin pour les images : dépend du chemin
 image_org = io.imread("../../image_palets_3.jpg")
 image_vert = filtre_vert_then_grey_then_otsu(image_org)
 
