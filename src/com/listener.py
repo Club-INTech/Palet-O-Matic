@@ -21,13 +21,13 @@ class ListerThread(threading.Thread):
         #     print(message)
 
     def recv(self):
-        header=('\x21',  '\x27')
+        header=('\x21', '\x2D')
         return self.clientsocket.recv(2048)
 
     def send(self, message):
-        header = ('\x21',  '\x27')
-        print(message)
-        message = header[0]+message+header[1]
+        header = ('\x21', '\x2D')
+        # print(message)
+        message = header[0]+header[1]+message
         print(message)
         self.clientsocket.send(message.encode())
 
