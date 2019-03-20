@@ -27,7 +27,7 @@ class ListerThread(threading.Thread):
     def send(self, message):
         header = ('\x21', '\x2D')
         # print(message)
-        message = header[0]+header[1]+message
+        message = header[0]+header[1]+message+"\n"
         print(message)
         self.clientsocket.send(message.encode())
 
@@ -35,4 +35,4 @@ class ListerThread(threading.Thread):
         self.clientsocket.close()
 
     def send_palet_list(self, table):
-        self.send(table.to_json().__str__())
+        self.send(table.to_json().__str__().replace("'", "\""))
