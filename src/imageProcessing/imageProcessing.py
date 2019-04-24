@@ -151,7 +151,8 @@ def plot_histo(image, title):
 
 
 # Changer le chemin pour les images : dépend du chemin
-image_org = io.imread("/home/yousra/2A/Cassiopée/tests_nouveau_tapis/image_avec_filtre.jpg")
+image_org = io.imread("/home/yousra/2A/Cassiopée/tests_nouveau_tapis/image_avec_filtre_coupee.jpg")
+from matplotlib import pyplot as plt
 image_vert = filtre_vert_then_grey_then_otsu(image_org)
 
 image_bleu = filtre_bleu_then_grey_then_otsu(image_org)
@@ -160,6 +161,7 @@ image_rouge = filtre_rouge_then_grey_then_otsu(image_org)
 
 io.imshow(image_bleu)
 
+plt.show()
 
 
 # Le vert donne le rouge
