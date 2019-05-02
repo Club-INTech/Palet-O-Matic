@@ -1,5 +1,13 @@
+from Camera import Camera
 from com.server import ServerThread
-from data.table import Table
+from data.data_handler import DataHandler
 
 server = ServerThread()
-server.run()
+data_handler = DataHandler()
+
+server.run(data_handler)
+
+camera = Camera()
+camera.show_picture
+
+

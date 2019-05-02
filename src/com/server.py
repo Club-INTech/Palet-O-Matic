@@ -16,12 +16,12 @@ class ServerThread(threading.Thread):
         self.tcpsock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         self.tcpsock.bind((self.ip, self.port))
 
-    def run(self):
+    def run(self, data_handler):
         while True:
             self.tcpsock.listen(10)
             print("Listening...")
             (clientsocket, (ip, port)) = self.tcpsock.accept()
-            newthread = ListerThread(ip, port, clientsocket)
+            newthread = ListerThread(ip, port, clientsocket, data_handler)
             newthread.start()
             self.connections += [newthread]
             print("connections")
