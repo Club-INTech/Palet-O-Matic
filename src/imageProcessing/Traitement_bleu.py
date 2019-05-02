@@ -5,18 +5,20 @@ import skimage.morphology as mo
 from imageProcessing.Traitement_couleur import Traitement_couleur
 
 "Cette classe hérite de la classe Traitement_couleur et s'occupe du traitement des palets bleus"
+
+
 class Traitement_Bleu(Traitement_couleur):
 
-    "Constructeur de la classe"
     def __init__(self, image):
+        "Constructeur de la classe"
         Traitement_couleur.__init__(self, image)
 
     def run(self):
         image_bleu = self.traitement_bleu_final(self.image)
         # Enregistrer l'image après pour visualiiser le résultat : enregistrer aussi dans les différentes étapes de traitement
 
-    "Cette méthode renvoie une image en noir et en blanc en éliminant les pixels inférieurs à un seuil*max(image)"
     def max_soustraction_bleu(self, im_grey):
+        "Cette méthode renvoie une image en noir et en blanc en éliminant les pixels inférieurs à un seuil*max(image)"
         val = 0.7 * np.max(im_grey)
         image_2 = im_grey.copy()
         n = im_grey.shape[1]
@@ -27,8 +29,8 @@ class Traitement_Bleu(Traitement_couleur):
                     image_2[i, j] = val
         return image_2
 
-    "Cette méthode regroupe les différents traitements qu'on fait pour isoler le canal bleu"
     def traitement_bleu(self, image_orig):
+        "Cette méthode regroupe les différents traitements qu'on fait pour isoler le canal bleu"
         image_rouge = self.canal_rouge(image_orig)
         image_vert = self.canal_vert(image_orig)
         image_bleu = self.canal_bleu(image_orig)
@@ -37,22 +39,22 @@ class Traitement_Bleu(Traitement_couleur):
         image_soustr_max = self.max_soustraction_bleu(image_soustr)
         return image_soustr_max
 
-    "Ouverture de l'image "
     def opening_bleu(self, im_in):
+        "Ouverture de l'image "
         cercle = mo.disk(2)
         im_out = mo.opening(im_in, cercle)
         return im_out
 
-    "Suppression des trous noirs dus au palets "
     def removing_holes_bleu(self, im_in_grey):
+        "Suppression des trous noirs dus au palets "
         # im_in_seuillee = filtre_otsu(im_in_grey)
         im_in_seuillee = self.filtrage_image(im_in_grey, 118.5)
         im_out = img_as_float(mo.remove_small_holes(im_in_seuillee, 10000))
         return im_out
 
-    "Traitement bleu final : regroupement des différentes méthodes : on a deux méthodes, traitement_bleu " \
-    "et traitement_bleu_final pour faciliter le debug"
     def traitement_bleu_final(self, im):
+        "Traitement bleu final : regroupement des différentes méthodes : on a deux méthodes, traitement_bleu " \
+        "et traitement_bleu_final pour faciliter le debug"
         image_bleu = self.traitement_bleu(im)
         image_opening_bleu = self.opening_bleu(image_bleu)
         image_remove_holes = self.removing_holes_bleu(image_opening_bleu)
