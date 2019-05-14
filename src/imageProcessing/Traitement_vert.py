@@ -1,4 +1,3 @@
-from skimage import io
 from skimage import img_as_float
 import numpy as np
 import skimage.morphology as mo

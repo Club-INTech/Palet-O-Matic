@@ -2,9 +2,6 @@ from threading import Thread
 from skimage import img_as_uint
 from skimage import filters
 import numpy as np
-import skimage.measure as me
-import math
-from skimage.transform import rotate
 
 "Cette classe dessine le squelette pour les différents traitements d'images pour les trois canaux"
 
