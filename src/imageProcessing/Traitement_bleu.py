@@ -11,10 +11,10 @@ class Traitement_Bleu(Traitement_couleur):
 
     def __init__(self, image):
         "Constructeur de la classe"
-        Traitement_couleur.__init__(self, image)
+        super.__init__(image)
 
     def run(self):
-        image_bleu = self.traitement_bleu_final(self.image)
+        self.image_bleu = self.traitement_bleu_final(self.image)
         # Enregistrer l'image après pour visualiiser le résultat : enregistrer aussi dans les différentes étapes de traitement
 
     def max_soustraction_bleu(self, im_grey):

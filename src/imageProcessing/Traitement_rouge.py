@@ -10,12 +10,13 @@ from imageProcessing.Traitement_couleur import Traitement_couleur
 
 class Traitement_Rouge(Traitement_couleur):
 
-    def __init__(self, image):
+    def __init__(self, image, match_commence):
         "Constructeur de la classe"
-        Traitement_couleur.__init__(self, image)
+        super.__init__(image)
+        self.match_commence = match_commence
 
     def run(self):
-        image_rouge = self.traitement_rouge_final(self.image)
+        self.image_rouge = self.traitement_rouge_final(self.image)
 
     def max_soustraction_rouge(self, im_grey):
         "Cette méthode renvoie une image en noir et en blanc en éliminant les pixels inférieurs à un seuil*max(image)"

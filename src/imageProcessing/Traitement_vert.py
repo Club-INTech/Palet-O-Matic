@@ -12,10 +12,10 @@ class Traitement_Vert(Traitement_couleur):
 
     def __init__(self, image):
         "Constructeur"
-        Traitement_couleur.__init__(self, image)
+        super.__init__(image)
 
     def run(self):
-        image_vert = self.traitement_vert_final(self.image)
+        self.image_vert = self.traitement_vert_final(self.image)
 
     def traitement_vert_final(self, im):
         "Regrougement des différentes méthodes de traitements"

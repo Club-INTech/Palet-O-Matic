@@ -1,7 +1,9 @@
 import threading
 
 from data.table import Table
-
+from imageProcessing import Traitement_bleu
+from imageProcessing import Traitement_vert
+from imageProcessing import Traitement_rouge
 
 class DataHandler(threading.Thread):
     """
@@ -10,10 +12,11 @@ class DataHandler(threading.Thread):
     observable.
     """
 
-    def __init__(self):
+    def __init__(self, camera):
         self.table = Table()
         self.match_commence = False
         self.__observers = []
+        self.camera = camera
 
     def register_observer(self, observer):
         self.__observers.append(observer)
@@ -31,7 +34,15 @@ class DataHandler(threading.Thread):
         Appelle les méthodes de imageProcessing et met à jour les palets.
         Notifie les listener pour qu'ils envoient les infos aux robot
         """
-    #     todo
+
+        thread_bleu = Traitement_bleu(self.camera.picture, self.match_commence)
+        thread_vert = Traitement_vert(self.camera.picture, self.match_commence)
+        thread_rouge = Traitement_rouge(self.camera.picture, self.match_commence)
+
+        thread_bleu.start()
+        thread_vert.start()
+        thread_rouge.start()
+
         self.notify_pallet_list()
 
     @property
