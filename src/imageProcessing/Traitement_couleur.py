@@ -68,36 +68,3 @@ class Traitement_couleur(Thread):
         # On met à noir les pixels respectant le mask
         image_2[mask_2] = 0
         return image_2
-
-    def centroids(self, image):
-        "Cette méthode calcule les centroids d'une image en noir et en blanc,elle retourne l'angle de rotation, " \
-        "les centroids, ainsi que le centre de rotation utilisée par la méthode rotate"
-        label = me.label(image)
-        regions = me.regionprops(label)
-        count = 0
-        x_max, y_max = 0, 0
-        x_min, y_min = 0, 0
-        first = True
-        centroids = []
-        for i in range(len(regions)):
-            if (regions[i].area > 1000):
-                count = count + 1
-                x, y = regions[i].centroid
-                centroids.append((x, y))
-                if (first):
-                    y_min = y
-                    x_min = x
-                    first = False
-                if (y < y_min):
-                    y_min = y
-                    x_min = x
-                if (y > y_max):
-                    y_max = y
-                    x_max = x
-        angle_rotate = math.degrees(np.arctan((x_max - x_min) / (y_max - y_min)))
-        return angle_rotate, centroids, (x_min, y_min)
-
-    def rotate(self, image):
-        "Cette méthode fait la rotation d'image suivant un angle et un centre de rotation"
-        image_rotate = rotate(image, self.centroids(0), self.centroids(2))
-        return image_rotate

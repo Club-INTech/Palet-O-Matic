@@ -1,7 +1,7 @@
 import threading
 import time
 
-from data.table import Table
+
 
 
 class ListerThread(threading.Thread):

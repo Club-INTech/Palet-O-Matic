@@ -34,16 +34,20 @@ class DataHandler(threading.Thread):
         Appelle les méthodes de imageProcessing et met à jour les palets.
         Notifie les listener pour qu'ils envoient les infos aux robot
         """
-
-        thread_bleu = Traitement_bleu(self.camera.picture, self.match_commence)
-        thread_vert = Traitement_vert(self.camera.picture, self.match_commence)
         thread_rouge = Traitement_rouge(self.camera.picture, self.match_commence)
+        thread_bleu = Traitement_bleu(self.camera.picture)
+        thread_vert = Traitement_vert(self.camera.picture)
 
-        thread_bleu.start()
-        thread_vert.start()
-        thread_rouge.start()
 
-        self.notify_pallet_list()
+        if self.match_commence:
+            thread_bleu.start()
+            thread_vert.start()
+            thread_rouge.start()
+            self.notify_pallet_list()
+        else :
+            thread_rouge.start()
+
+
 
     @property
     def match_commence(self):

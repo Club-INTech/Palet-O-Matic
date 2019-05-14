@@ -1,7 +1,7 @@
-from skimage import io
 from skimage import img_as_float
 import numpy as np
 import skimage.morphology as mo
+import skimage.measure as me
 
 from imageProcessing.Traitement_couleur import Traitement_couleur
 
@@ -57,4 +57,22 @@ class Traitement_Rouge(Traitement_couleur):
         image_rouge = self.traitement_rouge(im)
         image_opening_rouge = self.opening_rouge(image_rouge)
         image_remove_holes = self.removing_holes_rouge(image_opening_rouge)
+        if self.match_commence:
+                return self.centroids_redressement(im)
         return image_remove_holes
+
+    def centroids_redressement(self, im):
+        "Cette méthode renvoit les sommets du carré de la cale utilisée pour le redressement"
+        label = me.label(im)
+        regions = me.regionprops(label)
+        centers = []
+        for i in range(len(regions)):
+            if (regions[i].area > 1000):
+                x, y = regions[i].centroid
+                if (y > 1000 and x > 300):
+                    x_center = int(x)
+                    y_center = int(y)
+                    centers.append((x_center, y_center))
+        centers[1], centers[3] = centers[3], centers[1]
+        return centers
+
