@@ -11,7 +11,8 @@ class Traitement_Bleu(Traitement_couleur):
 
     def __init__(self, image):
         "Constructeur de la classe"
-        super.__init__(image)
+        Traitement_couleur.__init__(self, image)
+        self.image_bleu = image
 
     def run(self):
         self.image_bleu = self.traitement_bleu_final(self.image)
