@@ -12,6 +12,7 @@ class Traitement_Vert(Traitement_couleur):
     def __init__(self, image):
         "Constructeur"
         super.__init__(image)
+        self.image_vert = image
 
     def run(self):
         self.image_vert = self.traitement_vert_final(self.image)

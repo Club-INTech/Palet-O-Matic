@@ -1,7 +1,12 @@
 from skimage import img_as_float
+from skimage import io
+import matplotlib.pyplot as plt
 import numpy as np
 import skimage.morphology as mo
 import skimage.measure as me
+import skimage.draw as dr
+from skimage.color import gray2rgb
+from skimage import img_as_uint
 
 from imageProcessing.Traitement_couleur import Traitement_couleur
 
@@ -12,11 +17,16 @@ class Traitement_Rouge(Traitement_couleur):
 
     def __init__(self, image, match_commence):
         "Constructeur de la classe"
-        super.__init__(image)
+        Traitement_couleur.__init__(self, image)
         self.match_commence = match_commence
+        self.image_rouge = image
+        self.coordonnee = None
 
     def run(self):
-        self.image_rouge = self.traitement_rouge_final(self.image)
+        if self.match_commence:
+            self.image_rouge = self.traitement_rouge_final(self.image)
+        else:
+            self.coordonnee = self.centroids_redressement()
 
     def max_soustraction_rouge(self, im_grey):
         "Cette méthode renvoie une image en noir et en blanc en éliminant les pixels inférieurs à un seuil*max(image)"
@@ -57,22 +67,37 @@ class Traitement_Rouge(Traitement_couleur):
         image_rouge = self.traitement_rouge(im)
         image_opening_rouge = self.opening_rouge(image_rouge)
         image_remove_holes = self.removing_holes_rouge(image_opening_rouge)
-        if self.match_commence:
-                return self.centroids_redressement(im)
         return image_remove_holes
 
-    def centroids_redressement(self, im):
+    def centroids_redressement(self):
         "Cette méthode renvoit les sommets du carré de la cale utilisée pour le redressement"
+        im = self.traitement_rouge_final(self.image_rouge)
         label = me.label(im)
         regions = me.regionprops(label)
-        centers = []
+        centers = np.array([[0, 0], [0, 0], [0, 0], [0, 0]])
+        im_centroids = img_as_uint(gray2rgb(im.copy()))
+        j = 0
         for i in range(len(regions)):
             if (regions[i].area > 1000):
                 x, y = regions[i].centroid
                 if (y > 1000 and x > 300):
                     x_center = int(x)
                     y_center = int(y)
-                    centers.append((x_center, y_center))
-        centers[1], centers[3] = centers[3], centers[1]
+                    centers[j][1] = x_center
+                    centers[j][0] = y_center
+                    x_draw, y_draw = dr.circle(int(x_center),int(y_center),10)
+                    im_centroids[x_draw, y_draw] = [255,0,0]
+                    j += 1
+        print(centers)
+        swap(centers, 0, 3)
+        swap(centers, 0, 1)
+        print(centers)
+        io.imshow(im_centroids)
+        plt.show()
         return centers
 
+
+def swap(tab, i, j):
+    x, y = tab[i][0], tab[i][1]
+    tab[i][0], tab[i][1] = tab[j][0], tab[j][1]
+    tab[j][0], tab[j][1] = x, y
