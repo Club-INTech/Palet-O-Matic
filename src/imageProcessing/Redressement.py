@@ -1,5 +1,5 @@
 import os
-from time import sleep
+from time import sleep, time
 
 import skimage
 from skimage import io
@@ -13,6 +13,7 @@ import skimage.draw as dr
 from skimage import transform as tf
 
 from imageProcessing.Traitement_bleu import Traitement_Bleu
+from imageProcessing.Traitement_vert import Traitement_Vert
 from imageProcessing.Traitement_rouge import Traitement_Rouge
 
 filename = []
@@ -116,24 +117,46 @@ def redresser(image, dst):
 
     return warped
 
-rouge = Traitement_Rouge(io.imread(filename[0]), False)
-# bleu = Traitement_Rouge(io.imread(filename[0]))
+
+t1 = time()
+image = io.imread("/home/yousra/2A/Cassiopée/tests_nouveau_tapis/image_camera/image_cale_sans_palets.jpg")
+rouge = Traitement_Rouge(image, False)
 rouge.start()
+rouge.join()
 
-
-sleep(10)
-
-traitrouge = Traitement_Rouge(io.imread(filename[1]), True)
-# traitbleu = Traitement_Bleu(io.imread(filename[1]))
+t2 = time()
+rouge.join()
+image_palets_rouge = io.imread("/home/yousra/2A/Cassiopée/tests_nouveau_tapis/image_camera/2019-05-14_14_59_35.jpg")
+image_palets_vert = io.imread("/home/yousra/2A/Cassiopée/tests_nouveau_tapis/image_camera/2019-05-14_14_59_35.jpg")
+image_palets_bleu = io.imread("/home/yousra/2A/Cassiopée/tests_nouveau_tapis/image_camera/2019-05-14_14_59_35.jpg")
+traitvert = Traitement_Vert(image_palets_vert)
+traitbleu = Traitement_Bleu(image_palets_bleu)
+traitrouge = Traitement_Rouge(image_palets_rouge, True)
+traitvert.start()
+traitbleu.start()
 traitrouge.start()
-# traitbleu.start()
-sleep(10)
-# io.imshow(traitrouge.image_rouge)
-# plt.show()
+traitvert.join()
+
+
+green_position = centroids(redresser(traitvert.image_vert, rouge.coordonnee))
+traitbleu.join()
+blue_position = centroids(redresser(traitbleu.image_bleu, rouge.coordonnee))
+traitrouge.join()
 red_position = centroids(redresser(traitrouge.image_rouge, rouge.coordonnee))
-# red_position = centroids(redresser(traitbleu.image_bleu, rouge.coordonnee))
-# red_position = centroids(redresser(traitrouge.image_rouge, rouge.coordonnee))
-print("positions dans la zone de chaos en px", red_position)
-print("positions sur la table en mm", changement_repere(red_position))
+t3 = time()
+
+print("Le temps d'exécution avant un match", t2-t1)
+print("Le temps d'exécution pendant un match", t3-t2)
+#sleep(20)
+#print("positions dans la zone de chaos en px", green_position)
+print("R : positions sur la table en mm", changement_repere(red_position))
+#print("positions dans la zone de chaos en px", red_position)
+print("G : positions sur la table en mm", changement_repere(green_position))
+#print("positions dans la zone de chaos en px", blue_position)
+print("B : positions sur la table en mm", changement_repere(blue_position))
+
+
+
+
 
 # redresser(bleu.image_bleu, 1)

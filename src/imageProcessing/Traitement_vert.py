@@ -1,6 +1,9 @@
 from skimage import img_as_float
 import numpy as np
 import skimage.morphology as mo
+from time import sleep
+from skimage import io
+import matplotlib.pyplot as plt
 
 from imageProcessing.Traitement_couleur import Traitement_couleur
 
@@ -10,8 +13,8 @@ from imageProcessing.Traitement_couleur import Traitement_couleur
 class Traitement_Vert(Traitement_couleur):
 
     def __init__(self, image):
-        "Constructeur"
-        super.__init__(image)
+        "Constructeur de la classe"
+        Traitement_couleur.__init__(self, image)
         self.image_vert = image
 
     def run(self):
@@ -20,6 +23,8 @@ class Traitement_Vert(Traitement_couleur):
     def traitement_vert_final(self, im):
         "Regrougement des différentes méthodes de traitements"
         image_vert = self.traitement_vert(im)
+        io.imshow(image_vert)
+        plt.show()
         image_opening_vert = self.opening_vert(image_vert)
         image_remove_holes = self.removing_holes_vert(image_opening_vert)
         return image_remove_holes
@@ -29,22 +34,30 @@ class Traitement_Vert(Traitement_couleur):
         im_in_seuillee = self.filtre_otsu(im_in_grey)  #: utiliser le filtre otsu pour avoir une idée du seuil
         # + tracer l'histogramme
         # im_in_seuillee = filtrage_image(im_in_grey,70)
-        im_out = img_as_float(mo.remove_small_holes(im_in_seuillee, 1))
+        im_out = img_as_float(mo.remove_small_holes(im_in_seuillee, 10000))
         return im_out
 
     def opening_vert(self, im_in):
         "OUverture de l'image"
-        cercle = mo.disk(7)
+        cercle = mo.disk(1)
         im_out = mo.opening(im_in, cercle)
         return im_out
 
     def traitement_vert(self, image_orig):
         "Cette méthode regroupe les différents traitements qu'on fait pour isoler le canal vert"
+        mask2 = image_orig[:, :, 2] > 210
+        image_orig[mask2] = [0, 0, 0]
+        io.imshow(image_orig)
+        plt.show()
         image_rouge = self.canal_rouge(image_orig)
         image_vert = self.canal_vert(image_orig)
+        io.imshow(image_vert)
+        plt.show()
         image_bleu = self.canal_bleu(image_orig)
         image_bleu_rouge = self.moyenne_deux_images_gris(image_bleu, image_rouge)
         image_soustr = self.soustraction_deux_images_gris(image_vert, image_bleu_rouge)
+        io.imshow(image_soustr)
+        plt.show()
         image_soustr_max = self.max_soustraction_vert(image_soustr)
         return image_soustr_max
 
@@ -58,3 +71,4 @@ class Traitement_Vert(Traitement_couleur):
                 if (im_grey[i][j] < val):
                     im_grey[i, j] = val
         return im_grey
+

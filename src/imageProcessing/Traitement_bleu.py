@@ -1,7 +1,9 @@
 from skimage import img_as_float
 import numpy as np
 import skimage.morphology as mo
-
+from skimage import io
+from time import sleep
+import matplotlib.pyplot as plt
 from imageProcessing.Traitement_couleur import Traitement_couleur
 
 "Cette classe hérite de la classe Traitement_couleur et s'occupe du traitement des palets bleus"
@@ -35,9 +37,15 @@ class Traitement_Bleu(Traitement_couleur):
         image_rouge = self.canal_rouge(image_orig)
         image_vert = self.canal_vert(image_orig)
         image_bleu = self.canal_bleu(image_orig)
+        io.imshow(image_bleu)
+        plt.show()
         image_vert_rouge = self.moyenne_deux_images_gris(image_vert, image_rouge)
         image_soustr = self.soustraction_deux_images_gris(image_bleu, image_vert_rouge)
+        io.imshow(image_soustr)
+        plt.show()
         image_soustr_max = self.max_soustraction_bleu(image_soustr)
+        io.imshow(image_soustr_max)
+        plt.show()
         return image_soustr_max
 
     def opening_bleu(self, im_in):
@@ -48,8 +56,8 @@ class Traitement_Bleu(Traitement_couleur):
 
     def removing_holes_bleu(self, im_in_grey):
         "Suppression des trous noirs dus au palets "
-        # im_in_seuillee = filtre_otsu(im_in_grey)
-        im_in_seuillee = self.filtrage_image(im_in_grey, 118.5)
+        #im_in_seuillee = self.filtre_otsu(im_in_grey)
+        im_in_seuillee = self.filtrage_image(im_in_grey, 123)
         im_out = img_as_float(mo.remove_small_holes(im_in_seuillee, 10000))
         return im_out
 
@@ -58,5 +66,8 @@ class Traitement_Bleu(Traitement_couleur):
         "et traitement_bleu_final pour faciliter le debug"
         image_bleu = self.traitement_bleu(im)
         image_opening_bleu = self.opening_bleu(image_bleu)
+        io.imshow(image_opening_bleu)
+        plt.show()
         image_remove_holes = self.removing_holes_bleu(image_opening_bleu)
         return image_remove_holes
+

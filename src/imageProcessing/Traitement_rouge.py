@@ -8,6 +8,7 @@ import skimage.draw as dr
 from skimage.color import gray2rgb
 from skimage import img_as_uint
 
+
 from imageProcessing.Traitement_couleur import Traitement_couleur
 
 "Cette classe hérite de la classe Traitement_couleur et s'occupe du traitement des palets rouges"
@@ -101,3 +102,5 @@ def swap(tab, i, j):
     x, y = tab[i][0], tab[i][1]
     tab[i][0], tab[i][1] = tab[j][0], tab[j][1]
     tab[j][0], tab[j][1] = x, y
+
+
