@@ -8,7 +8,7 @@ import skimage.draw as dr
 from skimage.color import gray2rgb
 from skimage import img_as_uint
 
-
+from config import DEBUG_PLOT
 from imageProcessing.Traitement_couleur import Traitement_couleur
 
 "Cette classe hérite de la classe Traitement_couleur et s'occupe du traitement des palets rouges"
@@ -86,15 +86,17 @@ class Traitement_Rouge(Traitement_couleur):
                     y_center = int(y)
                     centers[j][1] = x_center
                     centers[j][0] = y_center
-                    x_draw, y_draw = dr.circle(int(x_center),int(y_center),10)
-                    im_centroids[x_draw, y_draw] = [255,0,0]
+                    if DEBUG_PLOT:
+                        x_draw, y_draw = dr.circle(int(x_center),int(y_center),10)
+                        im_centroids[x_draw, y_draw] = [255,0,0]
                     j += 1
         print(centers)
         swap(centers, 0, 3)
         swap(centers, 0, 1)
         print(centers)
-        io.imshow(im_centroids)
-        plt.show()
+        if DEBUG_PLOT:
+            io.imshow(im_centroids)
+            plt.show()
         return centers
 
 

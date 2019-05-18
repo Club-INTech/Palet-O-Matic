@@ -5,6 +5,7 @@ from time import sleep
 from skimage import io
 import matplotlib.pyplot as plt
 
+from config import DEBUG_PLOT
 from imageProcessing.Traitement_couleur import Traitement_couleur
 
 "Cette classe hérite de la classe Traitement_couleur et s'occupe du traitement des palets rouges"
@@ -23,8 +24,9 @@ class Traitement_Vert(Traitement_couleur):
     def traitement_vert_final(self, im):
         "Regrougement des différentes méthodes de traitements"
         image_vert = self.traitement_vert(im)
-        io.imshow(image_vert)
-        plt.show()
+        if DEBUG_PLOT:
+            io.imshow(image_vert)
+            plt.show()
         image_opening_vert = self.opening_vert(image_vert)
         image_remove_holes = self.removing_holes_vert(image_opening_vert)
         return image_remove_holes
@@ -47,17 +49,20 @@ class Traitement_Vert(Traitement_couleur):
         "Cette méthode regroupe les différents traitements qu'on fait pour isoler le canal vert"
         mask2 = image_orig[:, :, 2] > 210
         image_orig[mask2] = [0, 0, 0]
-        io.imshow(image_orig)
-        plt.show()
+        if DEBUG_PLOT:
+            io.imshow(image_orig)
+            plt.show()
         image_rouge = self.canal_rouge(image_orig)
         image_vert = self.canal_vert(image_orig)
-        io.imshow(image_vert)
-        plt.show()
+        if DEBUG_PLOT:
+            io.imshow(image_vert)
+            plt.show()
         image_bleu = self.canal_bleu(image_orig)
         image_bleu_rouge = self.moyenne_deux_images_gris(image_bleu, image_rouge)
         image_soustr = self.soustraction_deux_images_gris(image_vert, image_bleu_rouge)
-        io.imshow(image_soustr)
-        plt.show()
+        if DEBUG_PLOT:
+            io.imshow(image_soustr)
+            plt.show()
         image_soustr_max = self.max_soustraction_vert(image_soustr)
         return image_soustr_max
 

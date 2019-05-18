@@ -4,6 +4,8 @@ import skimage.morphology as mo
 from skimage import io
 from time import sleep
 import matplotlib.pyplot as plt
+
+from config import DEBUG_PLOT
 from imageProcessing.Traitement_couleur import Traitement_couleur
 
 "Cette classe hérite de la classe Traitement_couleur et s'occupe du traitement des palets bleus"
@@ -37,15 +39,18 @@ class Traitement_Bleu(Traitement_couleur):
         image_rouge = self.canal_rouge(image_orig)
         image_vert = self.canal_vert(image_orig)
         image_bleu = self.canal_bleu(image_orig)
-        io.imshow(image_bleu)
-        plt.show()
+        if DEBUG_PLOT:
+            io.imshow(image_bleu)
+            plt.show()
         image_vert_rouge = self.moyenne_deux_images_gris(image_vert, image_rouge)
         image_soustr = self.soustraction_deux_images_gris(image_bleu, image_vert_rouge)
-        io.imshow(image_soustr)
-        plt.show()
+        if DEBUG_PLOT:
+            io.imshow(image_soustr)
+            plt.show()
         image_soustr_max = self.max_soustraction_bleu(image_soustr)
-        io.imshow(image_soustr_max)
-        plt.show()
+        if DEBUG_PLOT:
+            io.imshow(image_soustr_max)
+            plt.show()
         return image_soustr_max
 
     def opening_bleu(self, im_in):
@@ -66,8 +71,9 @@ class Traitement_Bleu(Traitement_couleur):
         "et traitement_bleu_final pour faciliter le debug"
         image_bleu = self.traitement_bleu(im)
         image_opening_bleu = self.opening_bleu(image_bleu)
-        io.imshow(image_opening_bleu)
-        plt.show()
+        if DEBUG_PLOT:
+            io.imshow(image_opening_bleu)
+            plt.show()
         image_remove_holes = self.removing_holes_bleu(image_opening_bleu)
         return image_remove_holes
 

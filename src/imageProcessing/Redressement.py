@@ -1,10 +1,5 @@
-import os
-from time import sleep, time
-
-import skimage
 from skimage import io
 
-import math
 import numpy as np
 import matplotlib.pyplot as plt
 import skimage.measure as me
@@ -12,17 +7,8 @@ import skimage.draw as dr
 
 from skimage import transform as tf
 
-from config import COTE_CALE_MM, COTE_CALE_PX, X_CHAOS_YELLOW, COULEUR, X_CHAOS_PURPLE, Y_CHAOS_YELLOW, Y_CHAOS_PURPLE
-from imageProcessing.Traitement_bleu import Traitement_Bleu
-from imageProcessing.Traitement_vert import Traitement_Vert
-from imageProcessing.Traitement_rouge import Traitement_Rouge
-
-filename = []
-filename.append(os.path.join(skimage.data_dir, '/home/sam/INTech/Palet-O-Matic/tmp/2019-05-14_15:27:50.jpg'))
-filename.append(os.path.join(skimage.data_dir, '/home/sam/INTech/Palet-O-Matic/tmp/2019-05-14_14:59:35.jpg'))
-# filename.append(os.path.join(skimage.data_dir, '/home/sam/INTech/Palet-O-Matic/tmp/2019-05-13_15:33:37.jpg'))
-# filename.append(os.path.join(skimage.data_dir, '/home/sam/INTech/Palet-O-Matic/tmp/2019-05-13_15:31:29.jpg'))
-
+from config import COTE_CALE_MM, COTE_CALE_PX, X_CHAOS_YELLOW, COULEUR, X_CHAOS_PURPLE, Y_CHAOS_YELLOW, Y_CHAOS_PURPLE, \
+    DEBUG_PLOT, DEBUG
 
 
 def px_to_mm(len_px):
@@ -70,11 +56,13 @@ def centroids(image):
             x, y = regions[i].centroid
             if x > 200 and x <900:
                 centroids.append((x, y))
-                x_draw, y_draw = dr.circle(x, y, 20)
-                print(centroids)
-                image[x_draw, y_draw] = 0
-    io.imshow(image)
-    plt.show()
+                if DEBUG_PLOT:
+                    x_draw, y_draw = dr.circle(x, y, 20)
+                    print(centroids)
+                    image[x_draw, y_draw] = 0
+    if DEBUG_PLOT:
+        io.imshow(image)
+        plt.show()
     return centroids
 
 
@@ -92,8 +80,9 @@ def redresser(image, dst):
     width = len(image)
     height = len(image)
     src = np.array([[0, 0], [0, height], [width, height], [width, 0]])
-    print("dst : ", dst)
-    print(len(image))
+    if DEBUG:
+        print("dst : ", dst)
+        print(len(image))
     # dst = np.array([[1137, 448], [1173, 693], [1537, 683], [1441, 449]])
 
     tform3 = tf.ProjectiveTransform()
