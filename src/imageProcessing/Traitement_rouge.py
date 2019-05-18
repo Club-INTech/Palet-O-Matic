@@ -8,7 +8,7 @@ import skimage.draw as dr
 from skimage.color import gray2rgb
 from skimage import img_as_uint
 
-from config import DEBUG_PLOT
+from config import DEBUG_PLOT, COULEUR
 from imageProcessing.Traitement_couleur import Traitement_couleur
 
 "Cette classe hérite de la classe Traitement_couleur et s'occupe du traitement des palets rouges"
@@ -58,8 +58,8 @@ class Traitement_Rouge(Traitement_couleur):
 
     def removing_holes_rouge(self, im_in):
         "Suppression des trous noirs dus au palets "
-        im_in_seuillee = self.filtre_otsu(im_in)
-        # im_in_seuillee = filtrage_image(im_in,118)
+        #im_in_seuillee = self.filtre_otsu(im_in)
+        im_in_seuillee = self.filtrage_image(im_in, 120)
         im_out = img_as_float(mo.remove_small_holes(im_in_seuillee, 750))
         return im_out
 
@@ -73,6 +73,7 @@ class Traitement_Rouge(Traitement_couleur):
     def centroids_redressement(self):
         "Cette méthode renvoit les sommets du carré de la cale utilisée pour le redressement"
         im = self.traitement_rouge_final(self.image_rouge)
+        self.image_rouge = im
         label = me.label(im)
         regions = me.regionprops(label)
         centers = np.array([[0, 0], [0, 0], [0, 0], [0, 0]])
@@ -81,19 +82,35 @@ class Traitement_Rouge(Traitement_couleur):
         for i in range(len(regions)):
             if (regions[i].area > 1000):
                 x, y = regions[i].centroid
-                if (y > 1000 and x > 300):
-                    x_center = int(x)
-                    y_center = int(y)
-                    centers[j][1] = x_center
-                    centers[j][0] = y_center
-                    if DEBUG_PLOT:
-                        x_draw, y_draw = dr.circle(int(x_center),int(y_center),10)
-                        im_centroids[x_draw, y_draw] = [255,0,0]
-                    j += 1
+                if(COULEUR == "purple"):
+                    if (y < 1000 and x > 300):
+                        x_center = int(x)
+                        y_center = int(y)
+                        centers[j][1] = x_center
+                        centers[j][0] = y_center
+                        if DEBUG_PLOT:
+                            x_draw, y_draw = dr.circle(int(x_center),int(y_center),10)
+                            im_centroids[x_draw, y_draw] = [255,0,0]
+                        j += 1
+
+                else:
+                    if (y > 1000 and x > 300):
+                        x_center = int(x)
+                        y_center = int(y)
+                        centers[j][1] = x_center
+                        centers[j][0] = y_center
+                        if DEBUG_PLOT:
+                            x_draw, y_draw = dr.circle(int(x_center),int(y_center),10)
+                            im_centroids[x_draw, y_draw] = [255,0,0]
+                        j += 1
         print(centers)
-        swap(centers, 0, 3)
-        swap(centers, 0, 1)
-        print(centers)
+        if(COULEUR == "yellow"):
+            swap(centers, 0, 3)
+            swap(centers, 0, 1)
+            print(centers)
+        else :
+            swap(centers, 1, 3)
+            print(centers)
         if DEBUG_PLOT:
             io.imshow(im_centroids)
             plt.show()
