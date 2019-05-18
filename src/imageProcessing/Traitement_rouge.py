@@ -22,6 +22,7 @@ class Traitement_Rouge(Traitement_couleur):
         self.match_commence = match_commence
         self.image_rouge = image
         self.coordonnee = None
+        self.x_center, self.y_center = 0, 0
 
     def run(self):
         if self.match_commence:
@@ -79,11 +80,13 @@ class Traitement_Rouge(Traitement_couleur):
         centers = np.array([[0, 0], [0, 0], [0, 0], [0, 0]])
         im_centroids = img_as_uint(gray2rgb(im.copy()))
         j = 0
+        count = 0
         for i in range(len(regions)):
             if (regions[i].area > 1000):
                 x, y = regions[i].centroid
                 if(COULEUR == "purple"):
                     if (y < 1000 and x > 300):
+                        count += 1
                         x_center = int(x)
                         y_center = int(y)
                         centers[j][1] = x_center
@@ -104,17 +107,41 @@ class Traitement_Rouge(Traitement_couleur):
                             im_centroids[x_draw, y_draw] = [255,0,0]
                         j += 1
         print(centers)
-        if(COULEUR == "yellow"):
-            swap(centers, 0, 3)
-            swap(centers, 0, 1)
-            print(centers)
-        else :
-            swap(centers, 1, 3)
-            print(centers)
+        sum_x = 0
+        sum_y = 0
+        for point in centers :
+            x,y = point
+            sum_x = x + sum_x
+            sum_y = y + sum_y
+        self.x_center = sum_x / 4
+        self.y_center = sum_y / 4
+        if DEBUG_PLOT:
+            x_draw, y_draw = dr.circle(int(self.x_center), int(self.y_center), 10)
+            im_centroids[x_draw, y_draw] = [255, 0, 0]
+        centers = self.points_redressement(centers)
+        print(centers)
         if DEBUG_PLOT:
             io.imshow(im_centroids)
             plt.show()
         return centers
+
+
+    def points_redressement(self, tab):
+        redressement = []
+        tab = tab.tolist()
+        for point in tab:
+            x, y = point
+            if x - self.x_center > 0 and y - self.y_center > 0:
+                redressement.insert(2, point)
+            elif x - self.x_center > 0 and y - self.y_center < 0:
+                redressement.insert(1, point)
+            elif x - self.x_center  < 0 and y - self.y_center > 0:
+                redressement.insert(3, point)
+            else:
+                redressement.insert(0, point)
+        print("redressement", np.asarray(redressement))
+        return np.asarray(redressement)
+
 
 
 def swap(tab, i, j):

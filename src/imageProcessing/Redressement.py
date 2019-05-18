@@ -114,15 +114,15 @@ def redresser(image, dst):
 
 
 t1 = time()
-image = io.imread("/home/yousra/2A/Cassiopée/tests_nouveau_tapis/image_camera/redressement/image_cale.jpg")
+image = io.imread("/home/yousra/2A/Cassiopée/Palet-O-Matic/tmp/2019-05-18_16:40:26.jpg")
 rouge = Traitement_Rouge(image, False)
 rouge.run()
 t2 = time()
 
 
-image_palets_rouge = io.imread("/home/yousra/2A/Cassiopée/tests_nouveau_tapis/image_camera/redressement/image_palets.jpg")
-image_palets_vert = io.imread("/home/yousra/2A/Cassiopée/tests_nouveau_tapis/image_camera/redressement/image_palets.jpg")
-image_palets_bleu = io.imread("/home/yousra/2A/Cassiopée/tests_nouveau_tapis/image_camera/redressement/image_palets.jpg")
+image_palets_rouge = io.imread("/home/yousra/2A/Cassiopée/Palet-O-Matic/tmp/2019-05-18_16:51:20.jpg")
+image_palets_vert = io.imread("/home/yousra/2A/Cassiopée/Palet-O-Matic/tmp/2019-05-18_16:51:20.jpg")
+image_palets_bleu = io.imread("/home/yousra/2A/Cassiopée/Palet-O-Matic/tmp/2019-05-18_16:51:20.jpg")
 traitvert = Traitement_Vert(image_palets_vert)
 traitbleu = Traitement_Bleu(image_palets_bleu)
 traitrouge = Traitement_Rouge(image_palets_rouge, True)
