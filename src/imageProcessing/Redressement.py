@@ -12,6 +12,7 @@ import skimage.draw as dr
 
 from skimage import transform as tf
 
+from config import COTE_CALE_MM, COTE_CALE_PX, X_CHAOS_YELLOW, COULEUR, X_CHAOS_PURPLE, Y_CHAOS_YELLOW, Y_CHAOS_PURPLE
 from imageProcessing.Traitement_bleu import Traitement_Bleu
 from imageProcessing.Traitement_vert import Traitement_Vert
 from imageProcessing.Traitement_rouge import Traitement_Rouge
@@ -22,10 +23,6 @@ filename.append(os.path.join(skimage.data_dir, '/home/sam/INTech/Palet-O-Matic/t
 # filename.append(os.path.join(skimage.data_dir, '/home/sam/INTech/Palet-O-Matic/tmp/2019-05-13_15:33:37.jpg'))
 # filename.append(os.path.join(skimage.data_dir, '/home/sam/INTech/Palet-O-Matic/tmp/2019-05-13_15:31:29.jpg'))
 
-cote_calle_mm = 330
-cote_calle_px = 1080
-x_chaos = 500
-y_chaos = 1050
 
 
 def px_to_mm(len_px):
@@ -34,7 +31,7 @@ def px_to_mm(len_px):
     :param len_px:
     :return:
     """
-    return len_px * cote_calle_mm / cote_calle_px
+    return len_px * COTE_CALE_MM / COTE_CALE_PX
 
 
 def changement_repere(positions):
@@ -44,10 +41,13 @@ def changement_repere(positions):
     :return:
     """
     positions_mm = []
+    x_chaos = X_CHAOS_PURPLE if COULEUR is "purple" else X_CHAOS_YELLOW
+    y_chaos = Y_CHAOS_PURPLE if COULEUR is "purple" else Y_CHAOS_YELLOW
+
     for x, y in positions:
-        x, y = y, cote_calle_px - x
-        x -= cote_calle_px / 2
-        y -= cote_calle_px / 2
+        x, y = y, COTE_CALE_PX - x
+        x -= COTE_CALE_PX / 2
+        y -= COTE_CALE_PX / 2
         x = px_to_mm(x) + x_chaos
         y = px_to_mm(y) + y_chaos
         positions_mm.append([x, y])
