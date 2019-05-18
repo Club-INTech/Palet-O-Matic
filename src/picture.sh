@@ -1,4 +1,4 @@
-#! bin/bahs
+#! bin/bash
 
 echo $1
 if [ ! -e tmp ]; then
