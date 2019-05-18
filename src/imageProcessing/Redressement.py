@@ -1,3 +1,5 @@
+from time import time
+
 from skimage import io
 
 import numpy as np
@@ -9,6 +11,9 @@ from skimage import transform as tf
 
 from config import COTE_CALE_MM, COTE_CALE_PX, X_CHAOS_YELLOW, COULEUR, X_CHAOS_PURPLE, Y_CHAOS_YELLOW, Y_CHAOS_PURPLE, \
     DEBUG_PLOT, DEBUG
+from imageProcessing.Traitement_bleu import Traitement_Bleu
+from imageProcessing.Traitement_rouge import Traitement_Rouge
+from imageProcessing.Traitement_vert import Traitement_Vert
 
 
 def px_to_mm(len_px):
@@ -107,30 +112,29 @@ def redresser(image, dst):
     return warped
 
 
-t1 = time()
-image = io.imread("/home/yousra/2A/Cassiopée/tests_nouveau_tapis/image_camera/image_cale_sans_palets.jpg")
-rouge = Traitement_Rouge(image, False)
-rouge.start()
-rouge.join()
 
+t1 = time()
+image = io.imread("/home/yousra/2A/Cassiopée/tests_nouveau_tapis/image_camera/redressement/image_cale.jpg")
+rouge = Traitement_Rouge(image, False)
+rouge.run()
 t2 = time()
-rouge.join()
-image_palets_rouge = io.imread("/home/yousra/2A/Cassiopée/tests_nouveau_tapis/image_camera/2019-05-14_14_59_35.jpg")
-image_palets_vert = io.imread("/home/yousra/2A/Cassiopée/tests_nouveau_tapis/image_camera/2019-05-14_14_59_35.jpg")
-image_palets_bleu = io.imread("/home/yousra/2A/Cassiopée/tests_nouveau_tapis/image_camera/2019-05-14_14_59_35.jpg")
+
+
+image_palets_rouge = io.imread("/home/yousra/2A/Cassiopée/tests_nouveau_tapis/image_camera/redressement/image_palets.jpg")
+image_palets_vert = io.imread("/home/yousra/2A/Cassiopée/tests_nouveau_tapis/image_camera/redressement/image_palets.jpg")
+image_palets_bleu = io.imread("/home/yousra/2A/Cassiopée/tests_nouveau_tapis/image_camera/redressement/image_palets.jpg")
 traitvert = Traitement_Vert(image_palets_vert)
 traitbleu = Traitement_Bleu(image_palets_bleu)
 traitrouge = Traitement_Rouge(image_palets_rouge, True)
-traitvert.start()
-traitbleu.start()
-traitrouge.start()
-traitvert.join()
+traitvert.run()
+traitbleu.run()
+traitrouge.run()
 
 
 green_position = centroids(redresser(traitvert.image_vert, rouge.coordonnee))
-traitbleu.join()
+
 blue_position = centroids(redresser(traitbleu.image_bleu, rouge.coordonnee))
-traitrouge.join()
+
 red_position = centroids(redresser(traitrouge.image_rouge, rouge.coordonnee))
 t3 = time()
 
