@@ -1,5 +1,3 @@
-from time import time
-
 from skimage import io
 
 import numpy as np
@@ -11,9 +9,6 @@ from skimage import transform as tf
 
 from config import COTE_CALE_MM, COTE_CALE_PX, X_CHAOS_YELLOW, COULEUR, X_CHAOS_PURPLE, Y_CHAOS_YELLOW, Y_CHAOS_PURPLE, \
     DEBUG_PLOT, DEBUG
-from imageProcessing.Traitement_bleu import Traitement_Bleu
-from imageProcessing.Traitement_rouge import Traitement_Rouge
-from imageProcessing.Traitement_vert import Traitement_Vert
 
 
 def px_to_mm(len_px):
@@ -96,60 +91,19 @@ def redresser(image, dst):
     # name = "./" + str(i) + ".jpg"
     # io.imsave(name, warped)
 
-    fig, ax = plt.subplots(nrows=2, figsize=(8, 3))
+    if DEBUG_PLOT:
+        fig, ax = plt.subplots(nrows=2, figsize=(8, 3))
     # centroids(warped)
-    ax[0].imshow(text, cmap=plt.cm.gray)
-    ax[0].plot(dst[:, 0], dst[:, 1], '.r')
-    ax[1].imshow(warped, cmap=plt.cm.gray)
+        ax[0].imshow(text, cmap=plt.cm.gray)
+        ax[0].plot(dst[:, 0], dst[:, 1], '.r')
+        ax[1].imshow(warped, cmap=plt.cm.gray)
 
-    for a in ax:
-        a.axis('off')
+        for a in ax:
+            a.axis('off')
 
-    plt.tight_layout()
+        plt.tight_layout()
 
-    plt.show()
+        plt.show()
 
     return warped
 
-
-
-t1 = time()
-image = io.imread("/home/yousra/2A/Cassiopée/Palet-O-Matic/tmp/2019-05-18_16:40:26.jpg")
-rouge = Traitement_Rouge(image, False)
-rouge.run()
-t2 = time()
-
-
-image_palets_rouge = io.imread("/home/yousra/2A/Cassiopée/Palet-O-Matic/tmp/2019-05-18_16:51:20.jpg")
-image_palets_vert = io.imread("/home/yousra/2A/Cassiopée/Palet-O-Matic/tmp/2019-05-18_16:51:20.jpg")
-image_palets_bleu = io.imread("/home/yousra/2A/Cassiopée/Palet-O-Matic/tmp/2019-05-18_16:51:20.jpg")
-traitvert = Traitement_Vert(image_palets_vert)
-traitbleu = Traitement_Bleu(image_palets_bleu)
-traitrouge = Traitement_Rouge(image_palets_rouge, True)
-traitvert.run()
-traitbleu.run()
-traitrouge.run()
-
-
-green_position = centroids(redresser(traitvert.image_vert, rouge.coordonnee))
-
-blue_position = centroids(redresser(traitbleu.image_bleu, rouge.coordonnee))
-
-red_position = centroids(redresser(traitrouge.image_rouge, rouge.coordonnee))
-t3 = time()
-
-print("Le temps d'exécution avant un match", t2-t1)
-print("Le temps d'exécution pendant un match", t3-t2)
-#sleep(20)
-#print("positions dans la zone de chaos en px", green_position)
-print("R : positions sur la table en mm", changement_repere(red_position))
-#print("positions dans la zone de chaos en px", red_position)
-print("G : positions sur la table en mm", changement_repere(green_position))
-#print("positions dans la zone de chaos en px", blue_position)
-print("B : positions sur la table en mm", changement_repere(blue_position))
-
-
-
-
-
-# redresser(bleu.image_bleu, 1)
