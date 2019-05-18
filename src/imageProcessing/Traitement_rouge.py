@@ -82,9 +82,9 @@ class Traitement_Rouge(Traitement_couleur):
         j = 0
         count = 0
         for i in range(len(regions)):
-            if (regions[i].area > 1000):
+            if regions[i].area > 1000:
                 x, y = regions[i].centroid
-                if(COULEUR == "purple"):
+                if COULEUR == "purple":
                     if (y < 1000 and x > 300):
                         count += 1
                         x_center = int(x)
@@ -97,7 +97,7 @@ class Traitement_Rouge(Traitement_couleur):
                         j += 1
 
                 else:
-                    if (y > 1000 and x > 300):
+                    if y > 1000 and x > 300:
                         x_center = int(x)
                         y_center = int(y)
                         centers[j][1] = x_center
@@ -119,7 +119,6 @@ class Traitement_Rouge(Traitement_couleur):
             x_draw, y_draw = dr.circle(int(self.x_center), int(self.y_center), 10)
             im_centroids[x_draw, y_draw] = [255, 0, 0]
         centers = self.points_redressement(centers)
-        print(centers)
         if DEBUG_PLOT:
             io.imshow(im_centroids)
             plt.show()
@@ -127,18 +126,18 @@ class Traitement_Rouge(Traitement_couleur):
 
 
     def points_redressement(self, tab):
-        redressement = []
+        redressement = [0, 0, 0, 0]
         tab = tab.tolist()
         for point in tab:
             x, y = point
             if x - self.x_center > 0 and y - self.y_center > 0:
-                redressement.insert(2, point)
+                redressement[2] = point
             elif x - self.x_center > 0 and y - self.y_center < 0:
-                redressement.insert(1, point)
+                redressement[3] = point
             elif x - self.x_center  < 0 and y - self.y_center > 0:
-                redressement.insert(3, point)
+                redressement[1] = point
             else:
-                redressement.insert(0, point)
+                redressement[0] = point
         print("redressement", np.asarray(redressement))
         return np.asarray(redressement)
 
