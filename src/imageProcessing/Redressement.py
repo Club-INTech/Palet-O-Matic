@@ -91,61 +91,20 @@ def redresser(image, dst):
     # name = "./" + str(i) + ".jpg"
     # io.imsave(name, warped)
 
-    fig, ax = plt.subplots(nrows=2, figsize=(8, 3))
+    if DEBUG_PLOT:
+        fig, ax = plt.subplots(nrows=2, figsize=(8, 3))
     # centroids(warped)
-    ax[0].imshow(text, cmap=plt.cm.gray)
-    ax[0].plot(dst[:, 0], dst[:, 1], '.r')
-    ax[1].imshow(warped, cmap=plt.cm.gray)
+        ax[0].imshow(text, cmap=plt.cm.gray)
+        ax[0].plot(dst[:, 0], dst[:, 1], '.r')
+        ax[1].imshow(warped, cmap=plt.cm.gray)
 
-    for a in ax:
-        a.axis('off')
+        for a in ax:
+            a.axis('off')
 
-    plt.tight_layout()
+        plt.tight_layout()
 
-    plt.show()
+        plt.show()
 
     return warped
 
 
-t1 = time()
-image = io.imread("/home/yousra/2A/Cassiopée/tests_nouveau_tapis/image_camera/image_cale_sans_palets.jpg")
-rouge = Traitement_Rouge(image, False)
-rouge.start()
-rouge.join()
-
-t2 = time()
-rouge.join()
-image_palets_rouge = io.imread("/home/yousra/2A/Cassiopée/tests_nouveau_tapis/image_camera/2019-05-14_14_59_35.jpg")
-image_palets_vert = io.imread("/home/yousra/2A/Cassiopée/tests_nouveau_tapis/image_camera/2019-05-14_14_59_35.jpg")
-image_palets_bleu = io.imread("/home/yousra/2A/Cassiopée/tests_nouveau_tapis/image_camera/2019-05-14_14_59_35.jpg")
-traitvert = Traitement_Vert(image_palets_vert)
-traitbleu = Traitement_Bleu(image_palets_bleu)
-traitrouge = Traitement_Rouge(image_palets_rouge, True)
-traitvert.start()
-traitbleu.start()
-traitrouge.start()
-traitvert.join()
-
-
-green_position = centroids(redresser(traitvert.image_vert, rouge.coordonnee))
-traitbleu.join()
-blue_position = centroids(redresser(traitbleu.image_bleu, rouge.coordonnee))
-traitrouge.join()
-red_position = centroids(redresser(traitrouge.image_rouge, rouge.coordonnee))
-t3 = time()
-
-print("Le temps d'exécution avant un match", t2-t1)
-print("Le temps d'exécution pendant un match", t3-t2)
-#sleep(20)
-#print("positions dans la zone de chaos en px", green_position)
-print("R : positions sur la table en mm", changement_repere(red_position))
-#print("positions dans la zone de chaos en px", red_position)
-print("G : positions sur la table en mm", changement_repere(green_position))
-#print("positions dans la zone de chaos en px", blue_position)
-print("B : positions sur la table en mm", changement_repere(blue_position))
-
-
-
-
-
-# redresser(bleu.image_bleu, 1)

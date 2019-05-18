@@ -1,4 +1,3 @@
-from threading import Thread
 from skimage import img_as_uint
 from skimage import filters
 import numpy as np
@@ -6,11 +5,10 @@ import numpy as np
 "Cette classe dessine le squelette pour les différents traitements d'images pour les trois canaux"
 
 
-class Traitement_couleur(Thread):
+class Traitement_couleur():
 
     def __init__(self, image):
         "Constructeur de la classe : on lui fournit l'image qu'on a pris "
-        Thread.__init__(self)
         self.image = image
 
     def canal_rouge(self, img_orig):
