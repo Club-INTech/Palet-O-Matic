@@ -85,15 +85,15 @@ class Traitement_Rouge(Traitement_couleur):
             if regions[i].area > 1000:
                 x, y = regions[i].centroid
                 if COULEUR == "purple":
-                    if (y < 1000 and x > 300):
+                    if y < 1000 and x > 300:
                         count += 1
                         x_center = int(x)
                         y_center = int(y)
                         centers[j][1] = x_center
                         centers[j][0] = y_center
                         if DEBUG_PLOT:
-                            x_draw, y_draw = dr.circle(int(x_center),int(y_center),10)
-                            im_centroids[x_draw, y_draw] = [255,0,0]
+                            x_draw, y_draw = dr.circle(int(x_center), int(y_center), 10)
+                            im_centroids[x_draw, y_draw] = [255, 0, 0]
                         j += 1
 
                 else:
@@ -103,20 +103,21 @@ class Traitement_Rouge(Traitement_couleur):
                         centers[j][1] = x_center
                         centers[j][0] = y_center
                         if DEBUG_PLOT:
-                            x_draw, y_draw = dr.circle(int(x_center),int(y_center),10)
-                            im_centroids[x_draw, y_draw] = [255,0,0]
+                            x_draw, y_draw = dr.circle(int(x_center), int(y_center), 10)
+                            im_centroids[x_draw, y_draw] = [255, 0, 0]
                         j += 1
         print(centers)
         sum_x = 0
         sum_y = 0
-        for point in centers :
-            x,y = point
+        for point in centers:
+            x, y = point
             sum_x = x + sum_x
             sum_y = y + sum_y
         self.x_center = sum_x / 4
         self.y_center = sum_y / 4
+        print("centers", self.x_center, self.y_center)
         if DEBUG_PLOT:
-            x_draw, y_draw = dr.circle(int(self.x_center), int(self.y_center), 10)
+            x_draw, y_draw = dr.circle(int(self.y_center), int(self.x_center), 10)
             im_centroids[x_draw, y_draw] = [255, 0, 0]
         centers = self.points_redressement(centers)
         if DEBUG_PLOT:

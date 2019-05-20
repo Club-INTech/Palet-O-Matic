@@ -24,7 +24,7 @@ def time_it(func):
 @time_it
 def compute_red(coordonnee, child_conn):
     image_palets_rouge = io.imread(
-    os.path.join(skimage.data_dir, "/home/sam/INTech/Palet-O-Matic/tmp/2019-05-14_14:59:35.jpg"))
+    os.path.join(skimage.data_dir, "/home/yousra/2A/Cassiopée/Palet-O-Matic/tmp/image_palets_yellow.jpg"))
     traitrouge = Traitement_Rouge(image_palets_rouge, True)
     traitrouge.run()
     child_conn.send(centroids(redresser(traitrouge.image_rouge, coordonnee)))
@@ -33,7 +33,7 @@ def compute_red(coordonnee, child_conn):
 @time_it
 def compute_blue(coordonnee, child_conn):
     image_palets_rouge = io.imread(
-    os.path.join(skimage.data_dir, "/home/sam/INTech/Palet-O-Matic/tmp/2019-05-14_14:59:35.jpg"))
+    os.path.join(skimage.data_dir, "/home/yousra/2A/Cassiopée/Palet-O-Matic/tmp/image_palets_yellow.jpg"))
     traitbleu = Traitement_Bleu(image_palets_rouge)
     traitbleu.run()
     child_conn.send(centroids(redresser(traitbleu.image_bleu, coordonnee)))
@@ -42,7 +42,7 @@ def compute_blue(coordonnee, child_conn):
 @time_it
 def compute_vert(coordonnee, child_conn):
     image_palets_rouge = io.imread(
-    os.path.join(skimage.data_dir, "/home/sam/INTech/Palet-O-Matic/tmp/2019-05-14_14:59:35.jpg"))
+    os.path.join(skimage.data_dir, "/home/yousra/2A/Cassiopée/Palet-O-Matic/tmp/image_palets_yellow.jpg"))
     traitvert = Traitement_Vert(image_palets_rouge)
     traitvert.run()
     child_conn.send(centroids(redresser(traitvert.image_vert, coordonnee)))
@@ -53,7 +53,7 @@ def compute():
 
     t1 = time()
 
-    image = io.imread(os.path.join(skimage.data_dir, '/home/sam/INTech/Palet-O-Matic/tmp/2019-05-14_15:27:50.jpg'))
+    image = io.imread(os.path.join(skimage.data_dir, '/home/yousra/2A/Cassiopée/Palet-O-Matic/tmp/image_cale_yellow_sans_palets.jpg'))
     rouge = Traitement_Rouge(image, False)
     rouge.run()
 
