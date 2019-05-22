@@ -1,9 +1,7 @@
 import threading
 
-from data.table import Table
-from imageProcessing import Traitement_bleu
-from imageProcessing import Traitement_vert
-from imageProcessing import Traitement_rouge
+from data.Table_Zone_Depart import Table_Zone_Depart
+from imageProcessing import Traitement_rouge_zone_depart
 
 class DataHandler(threading.Thread):
     """
@@ -13,8 +11,7 @@ class DataHandler(threading.Thread):
     """
 
     def __init__(self, camera):
-        self.table = Table()
-        self.match_commence = False
+        self.table = Table_Zone_Depart()
         self.__observers = []
         self.camera = camera
 
@@ -34,25 +31,8 @@ class DataHandler(threading.Thread):
         Appelle les méthodes de imageProcessing et met à jour les palets.
         Notifie les listener pour qu'ils envoient les infos aux robot
         """
-        thread_rouge = Traitement_rouge(self.camera.picture, self.match_commence)
-        thread_bleu = Traitement_bleu(self.camera.picture)
-        thread_vert = Traitement_vert(self.camera.picture)
+        thread_rouge = Traitement_rouge_zone_depart(self.camera.picture)
+        thread_rouge.start()
+        self.notify_pallet_list()
 
 
-        if self.match_commence:
-            thread_bleu.start()
-            thread_vert.start()
-            thread_rouge.start()
-            self.notify_pallet_list()
-        else :
-            thread_rouge.start()
-
-
-
-    @property
-    def match_commence(self):
-        return self.match_commence
-
-    @property
-    def set_match_commence(self):
-        self.match_commence = True

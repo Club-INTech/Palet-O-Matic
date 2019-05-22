@@ -1,5 +1,5 @@
-#COULEUR = "purple"
-COULEUR = "yellow"
+COULEUR = "purple"
+#COULEUR = "yellow"
 
 # Affichage du debug.
 DEBUG = False
