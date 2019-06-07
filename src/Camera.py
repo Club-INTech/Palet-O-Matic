@@ -10,7 +10,8 @@ from skimage import io
 class Camera:
 
     def __init__(self):
-        self.picture = self.take_picture()
+        self.picture_recalage = self.take_picture()
+        self.picture_palet = self.take_picture()
 
     def take_picture(self):
         """
@@ -21,17 +22,36 @@ class Camera:
         ts = time.gmtime()
         date = time.strftime("%Y-%m-%d_%H:%M:%S", ts)
         os.system("sh src/picture.sh " + date)
-        self.picture = io.imread("./tmp/"+date+".jpg")
-        return self.picture
+        return io.imread("./tmp/"+date+".jpg")
 
     @property
-    def get_picture(self):
-        return self.picture
+    def take_picture_recalage(self):
+        self.picture_recalage = self.take_picture()
 
     @property
-    def show_picture(self):
+    def take_picture_palet(self):
+        self.picture_palet = self.take_picture()
+
+    @property
+    def get_picture_recalage(self):
+        return self.picture_recalage
+
+    @property
+    def get_picture_palet(self):
+        return self.picture_palet
+
+    @property
+    def show_picture_recalage(self):
         """
         Affiche l'image capturée.
         """
-        io.imshow(self.picture)
+        io.imshow(self.picture_recalage)
+        plt.show()
+
+    @property
+    def show_picture_palet(self):
+        """
+        Affiche l'image capturée.
+        """
+        io.imshow(self.picture_palet)
         plt.show()
