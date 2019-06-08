@@ -25,6 +25,7 @@ class ListerThread(threading.Thread):
         while not self.data_handler.is_match_commmence:
             time.sleep(0.08)
             if self.recv() != "GO":
+                print("recuuuuuuuuuuuuuuuuuuuu")
                 self.data_handler.set_match_commence
         self.data_handler.image_processing()
         # self.send_palet_list(Table())
