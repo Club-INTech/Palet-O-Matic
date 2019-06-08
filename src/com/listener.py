@@ -22,7 +22,7 @@ class ListerThread(threading.Thread):
         print("Connexion de %s %s" % (self.ip, self.port,))
         #self.send("Hello world")
         # on attend que le match commence
-        while not self.data_handler.is_match_commmence:
+        while not self.data_handler.match_commence:
             time.sleep(0.08)
             if self.recv() != "GO":
                 print("recuuuuuuuuuuuuuuuuuuuu")

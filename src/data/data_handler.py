@@ -45,9 +45,5 @@ class DataHandler(threading.Thread):
             self.coordonee = compute_redressement(self.camera.get_picture_recalage)
 
     @property
-    def is_match_commence(self):
-        return self.match_commence
-
-    @property
     def set_match_commence(self):
         self.match_commence = True
