@@ -22,7 +22,7 @@ class Camera:
         ts = time.gmtime()
         date = time.strftime("%Y-%m-%d_%H:%M:%S", ts)
         os.system("sh src/picture.sh " + date)
-        return io.imread("./tmp/"+date+".jpg")
+        return "./tmp/"+date+".jpg"
 
     @property
     def take_picture_recalage(self):

@@ -23,27 +23,27 @@ def time_it(func):
 
 @time_it
 def compute_red(coordonnee, child_conn, image_palet):
-    # image_palets_rouge = io.imread(
+    image_palets_rouge = io.imread(image_palet)
     # os.path.join(skimage.data_dir, "/home/yousra/2A/Cassiopée/Palet-O-Matic/tmp/image_palets_yellow.jpg"))
-    traitrouge = Traitement_Rouge(image_palet, True)
+    traitrouge = Traitement_Rouge(image_palets_rouge, True)
     traitrouge.run()
     child_conn.send(centroids(redresser(traitrouge.image_rouge, coordonnee)))
 
 
 @time_it
 def compute_blue(coordonnee, child_conn, image_palet):
-    # image_palets_rouge = io.imread(
+    image_palets_rouge = io.imread(image_palet)
     # os.path.join(skimage.data_dir, "/home/yousra/2A/Cassiopée/Palet-O-Matic/tmp/image_palets_yellow.jpg"))
-    traitbleu = Traitement_Bleu(image_palet)
+    traitbleu = Traitement_Bleu(image_palets_rouge)
     traitbleu.run()
     child_conn.send(centroids(redresser(traitbleu.image_bleu, coordonnee)))
 
 
 @time_it
 def compute_vert(coordonnee, child_conn, image_palet):
-    # image_palets_rouge = io.imread(
+    image_palets_rouge = io.imread(image_palet)
     # os.path.join(skimage.data_dir, "/home/yousra/2A/Cassiopée/Palet-O-Matic/tmp/image_palets_yellow.jpg"))
-    traitvert = Traitement_Vert(image_palet)
+    traitvert = Traitement_Vert(image_palets_rouge)
     traitvert.run()
     child_conn.send(centroids(redresser(traitvert.image_vert, coordonnee)))
 
@@ -53,7 +53,7 @@ def compute(image, image_palet):
 
     t1 = time()
 
-    # image = io.imread(os.path.join(skimage.data_dir, '/home/yousra/2A/Cassiopée/Palet-O-Matic/tmp/image_cale_yellow_sans_palets.jpg'))
+    image = io.imread(image)
     rouge = Traitement_Rouge(image, False)
     rouge.run()
 

@@ -6,6 +6,7 @@ from skimage import io
 import matplotlib.pyplot as plt
 
 from config import DEBUG_PLOT
+from config import DEBUG
 from imageProcessing.Traitement_couleur import Traitement_couleur
 
 "Cette classe hérite de la classe Traitement_couleur et s'occupe du traitement des palets rouges"
@@ -19,7 +20,11 @@ class Traitement_Vert(Traitement_couleur):
         self.image_vert = image
 
     def run(self):
+        if DEBUG:
+            print("debut traitement vert")
         self.image_vert = self.traitement_vert_final(self.image)
+        if DEBUG:
+            print("fin traitement vert")
 
     def traitement_vert_final(self, im):
         "Regrougement des différentes méthodes de traitements"

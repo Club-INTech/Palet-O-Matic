@@ -5,7 +5,7 @@ from skimage import io
 from time import sleep
 import matplotlib.pyplot as plt
 
-from config import DEBUG_PLOT
+from config import DEBUG_PLOT, DEBUG
 from imageProcessing.Traitement_couleur import Traitement_couleur
 
 "Cette classe hérite de la classe Traitement_couleur et s'occupe du traitement des palets bleus"
@@ -19,7 +19,11 @@ class Traitement_Bleu(Traitement_couleur):
         self.image_bleu = image
 
     def run(self):
+        if DEBUG:
+            print("debut traitement bleu")
         self.image_bleu = self.traitement_bleu_final(self.image)
+        if DEBUG:
+            print("fin traitement bleu")
         # Enregistrer l'image après pour visualiiser le résultat : enregistrer aussi dans les différentes étapes de traitement
 
     def max_soustraction_bleu(self, im_grey):

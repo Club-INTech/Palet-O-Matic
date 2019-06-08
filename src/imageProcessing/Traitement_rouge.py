@@ -8,7 +8,7 @@ import skimage.draw as dr
 from skimage.color import gray2rgb
 from skimage import img_as_uint
 
-from config import DEBUG_PLOT, COULEUR
+from config import DEBUG_PLOT, DEBUG,  COULEUR
 from imageProcessing.Traitement_couleur import Traitement_couleur
 
 "Cette classe hérite de la classe Traitement_couleur et s'occupe du traitement des palets rouges"
@@ -26,7 +26,11 @@ class Traitement_Rouge(Traitement_couleur):
 
     def run(self):
         if self.match_commence:
+            if DEBUG:
+                print("debut traitement rouge")
             self.image_rouge = self.traitement_rouge_final(self.image)
+            if DEBUG:
+                print("fin traitement rouge")
         else:
             self.coordonnee = self.centroids_redressement()
 
