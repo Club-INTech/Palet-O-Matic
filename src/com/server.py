@@ -17,6 +17,7 @@ class ServerThread(threading.Thread):
         self.tcpsock.bind((self.ip, self.port))
 
     def run(self, data_handler):
+        data_handler.image_processing()
         while True:
             self.tcpsock.listen(10)
             print("Listening...")

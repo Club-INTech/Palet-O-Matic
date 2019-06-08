@@ -49,7 +49,7 @@ def compute_vert(coordonnee, child_conn, image_palet):
 
 
 @time_it
-def compute(image, image_palet):
+def compute_redressement(image):
 
     t1 = time()
 
@@ -58,17 +58,19 @@ def compute(image, image_palet):
     rouge.run()
 
     t2 = time()
+    return rouge.coordonnee
 
+def compute(coordonnee, image_palet, table):
     parent_conn, child_conn = Pipe()
-    p_red = Process(target=compute_red, args=(rouge.coordonnee, child_conn, image_palet))
+    p_red = Process(target=compute_red, args=(coordonnee, child_conn, image_palet))
     p_red.start()
 
     parent_conn_b, child_conn_b = Pipe()
-    p_blue = Process(target=compute_blue, args=(rouge.coordonnee, child_conn_b, image_palet))
+    p_blue = Process(target=compute_blue, args=(coordonnee, child_conn_b, image_palet))
     p_blue.start()
 
     parent_conn_v, child_conn_v = Pipe()
-    p_green = Process(target=compute_vert, args=(rouge.coordonnee, child_conn_v, image_palet))
+    p_green = Process(target=compute_vert, args=(coordonnee, child_conn_v, image_palet))
     p_green.start()
 
     p_red.join()
@@ -82,9 +84,18 @@ def compute(image, image_palet):
 
     t3 = time()
 
-    print("Le temps d'exécution avant un match", t2 - t1)
-    print("Le temps d'exécution pendant un match", t3 - t2)
+    # print("Le temps d'exécution avant un match", t2 - t1)
+    # print("Le temps d'exécution pendant un match", t3 - t2)
 
-    print("R : positions sur la table en mm", changement_repere(red_position))
-    print("B : positions sur la table en mm", changement_repere(blue_position))
-    print("V : positions sur la table en mm", changement_repere(green_position))
+    red = changement_repere(red_position)
+    blue = changement_repere(blue_position)
+    green = changement_repere(green_position)
+
+    table.purple_chaos[0] = red[0]
+    table.purple_chaos[1] = red[1]
+    table.purple_chaos[2] = green
+    table.purple_chaos[3] = blue
+
+    print("R : positions sur la table en mm", red)
+    print("B : positions sur la table en mm", blue)
+    print("V : positions sur la table en mm", green)

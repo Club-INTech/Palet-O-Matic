@@ -3,11 +3,7 @@ from Camera import Camera
 from com.server import ServerThread
 from data.data_handler import DataHandler
 
-# server = ServerThread()
-# data_handler = DataHandler()
-#
-# server.run(data_handler)
-from imageProcessing.Compute import compute
+
 
 print("Ajuster le filtre polarisant")
 os.system("sh src/direct.sh")
@@ -23,10 +19,9 @@ input("prendre photo palet ?")
 
 camera.take_picture_palet
 
-# input("afficher photos")
-# camera.show_picture_palet
-# camera.show_picture_recalage
+input("lancement !")
 
-input("lancer compute")
+server = ServerThread()
+data_handler = DataHandler(camera)
 
-compute(camera.get_picture_recalage, camera.get_picture_palet)
+server.run(data_handler)

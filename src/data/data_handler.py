@@ -4,6 +4,8 @@ from data.table import Table
 from imageProcessing import Traitement_bleu
 from imageProcessing import Traitement_vert
 from imageProcessing import Traitement_rouge
+from imageProcessing.Compute import compute, compute_redressement
+
 
 class DataHandler(threading.Thread):
     """
@@ -17,6 +19,7 @@ class DataHandler(threading.Thread):
         self.match_commence = False
         self.__observers = []
         self.camera = camera
+        self.coordonee = []
 
     def register_observer(self, observer):
         self.__observers.append(observer)
@@ -34,24 +37,12 @@ class DataHandler(threading.Thread):
         Appelle les méthodes de imageProcessing et met à jour les palets.
         Notifie les listener pour qu'ils envoient les infos aux robot
         """
-        thread_rouge = Traitement_rouge(self.camera.picture, self.match_commence)
-        thread_bleu = Traitement_bleu(self.camera.picture)
-        thread_vert = Traitement_vert(self.camera.picture)
-
 
         if self.match_commence:
-            thread_bleu.start()
-            thread_vert.start()
-            thread_rouge.start()
+            compute(self.coordonee, self.camera.get_picture_palet, self.table)
             self.notify_pallet_list()
         else :
-            thread_rouge.start()
-
-
-
-    @property
-    def match_commence(self):
-        return self.match_commence
+            self.coordonee = compute_redressement(self.camera.get_picture_recalage)
 
     @property
     def set_match_commence(self):
