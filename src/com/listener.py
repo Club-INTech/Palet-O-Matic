@@ -24,7 +24,7 @@ class ListerThread(threading.Thread):
         # on attend que le match commence
         while not self.data_handler.match_commence:
             time.sleep(0.08)
-            if self.recv() != "GO":
+            if self.recv() == "GO":
                 print("recuuuuuuuuuuuuuuuuuuuu")
                 self.data_handler.set_match_commence
         self.data_handler.image_processing()
@@ -34,8 +34,9 @@ class ListerThread(threading.Thread):
         #     print(message)
 
     def recv(self):
-        header = ('\x21', '\x2D')
-        return self.clientsocket.recv(2048).replace(header[0], "").replace(header[1], "")
+        header = ('b', '\n')
+        str = self.clientsocket.recv(2048).decode("utf-8")
+        return str.replace('\n', '')
 
     def send(self, message):
         header = ('\x21', '\x2D')
