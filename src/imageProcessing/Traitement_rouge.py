@@ -63,8 +63,8 @@ class Traitement_Rouge(Traitement_couleur):
 
     def removing_holes_rouge(self, im_in):
         "Suppression des trous noirs dus au palets "
-        #im_in_seuillee = self.filtre_otsu(im_in)
-        im_in_seuillee = self.filtrage_image(im_in, 120)
+        im_in_seuillee = self.filtre_otsu(im_in)
+        #im_in_seuillee = self.filtrage_image(im_in, 120)
         im_out = img_as_float(mo.remove_small_holes(im_in_seuillee, 750))
         return im_out
 
@@ -152,5 +152,7 @@ def swap(tab, i, j):
     x, y = tab[i][0], tab[i][1]
     tab[i][0], tab[i][1] = tab[j][0], tab[j][1]
     tab[j][0], tab[j][1] = x, y
+
+
 
 
