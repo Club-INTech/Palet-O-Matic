@@ -60,7 +60,8 @@ def compute_redressement(image):
     t2 = time()
     return rouge.coordonnee
 
-def compute(coordonnee, image_palet, table):
+
+def compute(coordonnee, image_palet, table, test):
     parent_conn, child_conn = Pipe()
     p_red = Process(target=compute_red, args=(coordonnee, child_conn, image_palet))
     p_red.start()
@@ -91,10 +92,11 @@ def compute(coordonnee, image_palet, table):
     blue = changement_repere(blue_position)
     green = changement_repere(green_position)
 
-    table.purple_chaos[0] = red[0]
-    table.purple_chaos[1] = red[1]
-    table.purple_chaos[2] = green
-    table.purple_chaos[3] = blue
+    if not test:
+        table.purple_chaos[0] = red[0]
+        table.purple_chaos[1] = red[1]
+        table.purple_chaos[2] = green
+        table.purple_chaos[3] = blue
 
     print("R : positions sur la table en mm", red)
     print("B : positions sur la table en mm", blue)

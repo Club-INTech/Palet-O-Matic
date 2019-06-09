@@ -1,6 +1,6 @@
 import os
 from Camera import Camera
-from imageProcessing.Compute import compute
+from imageProcessing.Compute import compute, compute_redressement
 
 print("Ajuster le filtre polarisant")
 os.system("sh src/direct.sh")
@@ -22,4 +22,6 @@ camera.take_picture_palet
 
 input("lancer compute")
 
-compute(camera.get_picture_recalage, camera.get_picture_palet)
+coordonnee = compute_redressement(camera.get_picture_recalage)
+
+compute(coordonnee, camera.get_picture_palet, None, True)

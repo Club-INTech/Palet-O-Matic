@@ -3,7 +3,7 @@ COULEUR = "purple"
 
 # Affichage du debug.
 
-DEBUG = False
+DEBUG = True
 
 DEBUG_PLOT = False
 
