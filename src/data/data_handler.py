@@ -1,10 +1,9 @@
 import threading
 
 from data.table import Table
-from imageProcessing import Traitement_bleu
-from imageProcessing import Traitement_vert
-from imageProcessing import Traitement_rouge
+from skimage import io
 from imageProcessing.Compute import compute, compute_redressement
+from imageProcessing.Traitement_rouge import Traitement_Rouge
 
 
 class DataHandler(threading.Thread):
@@ -17,9 +16,11 @@ class DataHandler(threading.Thread):
     def __init__(self, camera):
         self.table = Table()
         self.match_commence = False
+        self.detection_done = False
         self.__observers = []
         self.camera = camera
-        self.coordonee = []
+        self.coordonnee = []
+        self.rouge = None
 
     def register_observer(self, observer):
         self.__observers.append(observer)
@@ -39,11 +40,16 @@ class DataHandler(threading.Thread):
         """
 
         if self.match_commence:
-            compute(self.coordonee, self.camera.get_picture_palet, self.table)
+            if not self.detection_done:
+                compute(self.coordonnee, self.camera.get_picture_palet, self.table, False)
+                self.detection_done = True
             self.notify_pallet_list()
         else:
             self.camera.take_picture_palet
-            self.coordonee = compute_redressement(self.camera.get_picture_recalage)
+            image = io.imread(self.camera.get_picture_recalage)
+            self.rouge = Traitement_Rouge(image, False)
+            compute_redressement(self.rouge)
+            self.coordonnee = self.rouge.coordonnee
 
     @property
     def set_match_commence(self):

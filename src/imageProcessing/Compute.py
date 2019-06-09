@@ -49,15 +49,15 @@ def compute_vert(coordonnee, child_conn, image_palet):
 
 
 @time_it
-def compute_redressement(image):
+def compute_redressement(rouge):
 
     t1 = time()
 
-    image = io.imread(image)
-    rouge = Traitement_Rouge(image, False)
+
     rouge.run()
 
     t2 = time()
+    print("Compute redressement : rouge.coordonne", rouge.coordonnee)
     return rouge.coordonnee
 
 

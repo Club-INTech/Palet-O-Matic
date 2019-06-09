@@ -33,6 +33,8 @@ class Traitement_Rouge(Traitement_couleur):
                 print("fin traitement rouge")
         else:
             self.coordonnee = self.centroids_redressement()
+            if DEBUG:
+                print("Traitement rouge : coordonne", self.coordonnee)
 
     def max_soustraction_rouge(self, im_grey):
         "Cette méthode renvoie une image en noir et en blanc en éliminant les pixels inférieurs à un seuil*max(image)"
