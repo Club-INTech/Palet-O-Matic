@@ -92,12 +92,13 @@ def compute(coordonnee, image_palet, table, test):
     blue = changement_repere(blue_position)
     green = changement_repere(green_position)
 
-    if not test:
-        table.purple_chaos[0] = red[0]
-        table.purple_chaos[1] = red[1]
-        table.purple_chaos[2] = green
-        table.purple_chaos[3] = blue
-
     print("R : positions sur la table en mm", red)
     print("B : positions sur la table en mm", blue)
     print("V : positions sur la table en mm", green)
+
+    if not test:
+        table.purple_chaos[0].x, table.purple_chaos[0].y = red[0][0], red[0][1]
+        table.purple_chaos[1].x, table.purple_chaos[1].y = red[1][0], red[1][1]
+        table.purple_chaos[2].x, table.purple_chaos[2].y = green[0], green[1]
+        table.purple_chaos[3].x, table.purple_chaos[3].y = blue[0], blue[1]
+
