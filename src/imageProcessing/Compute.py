@@ -22,21 +22,21 @@ def time_it(func):
 
 
 @time_it
-def compute_red(coordonnee, child_conn, traitrouge):
+def compute_red(coordonnee, child_conn, traitrouge, redtab):
     traitrouge.run()
-    child_conn.send(centroids(redresser(traitrouge.image_rouge, coordonnee)))
+    child_conn.send(centroids(redresser(traitrouge.image_rouge, coordonnee), redtab))
 
 
 @time_it
-def compute_blue(coordonnee, child_conn, traitbleu):
+def compute_blue(coordonnee, child_conn, traitbleu, bluetab):
     traitbleu.run()
-    child_conn.send(centroids(redresser(traitbleu.image_bleu, coordonnee)))
+    child_conn.send(centroids(redresser(traitbleu.image_bleu, coordonnee), bluetab))
 
 
 @time_it
-def compute_vert(coordonnee, child_conn, traitvert):
+def compute_vert(coordonnee, child_conn, traitvert, greentab):
     traitvert.run()
-    child_conn.send(centroids(redresser(traitvert.image_vert, coordonnee)))
+    child_conn.send(centroids(redresser(traitvert.image_vert, coordonnee), greentab))
 
 
 @time_it
@@ -56,19 +56,22 @@ def compute(coordonnee, image_palet, table, test):
     parent_conn, child_conn = Pipe()
     image_palets_rouge = io.imread(image_palet)
     traitrouge = Traitement_Rouge(image_palets_rouge, True)
-    p_red = Process(target=compute_red, args=(coordonnee, child_conn, traitrouge))
+    redtab = []
+    p_red = Process(target=compute_red, args=(coordonnee, child_conn, traitrouge, redtab))
     p_red.start()
 
     parent_conn_b, child_conn_b = Pipe()
     image_palets_bleu = io.imread(image_palet)
     traitbleu = Traitement_Bleu(image_palets_bleu)
-    p_blue = Process(target=compute_blue, args=(coordonnee, child_conn_b, traitbleu))
+    bluetab = []
+    p_blue = Process(target=compute_blue, args=(coordonnee, child_conn_b, traitbleu, bluetab))
     p_blue.start()
 
     parent_conn_v, child_conn_v = Pipe()
     image_palets_vert = io.imread(image_palet)
     traitvert = Traitement_Vert(image_palets_vert)
-    p_green = Process(target=compute_vert, args=(coordonnee, child_conn_v, traitvert))
+    greentab = []
+    p_green = Process(target=compute_vert, args=(coordonnee, child_conn_v, traitvert, greentab))
     p_green.start()
 
     p_red.join()
@@ -85,9 +88,12 @@ def compute(coordonnee, image_palet, table, test):
     # print("Le temps d'exécution avant un match", t2 - t1)
     # print("Le temps d'exécution pendant un match", t3 - t2)
 
-    red = changement_repere(red_position)
-    blue = changement_repere(blue_position)
-    green = changement_repere(green_position)
+    # red = changement_repere(red_position)
+    # blue = changement_repere(blue_position)
+    # green = changement_repere(green_position)
+    red = redtab
+    blue = bluetab
+    green = greentab
 
     print("R : positions sur la table en mm", red)
     print("B : positions sur la table en mm", blue)

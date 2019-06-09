@@ -41,11 +41,11 @@ class DataHandler(threading.Thread):
 
         if self.match_commence:
             if not self.detection_done:
+                self.camera.take_picture_palet
                 compute(self.coordonnee, self.camera.get_picture_palet, self.table, False)
                 self.detection_done = True
             self.notify_pallet_list()
         else:
-            self.camera.take_picture_palet
             image = io.imread(self.camera.get_picture_recalage)
             self.rouge = Traitement_Rouge(image, False)
             compute_redressement(self.rouge)

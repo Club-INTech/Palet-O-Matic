@@ -40,7 +40,7 @@ def changement_repere(positions):
     return positions_mm
 
 
-def centroids(image):
+def centroids(image, centroids):
     """
     Revoie les centres des palets sur une image binaire redressée.
     :param image:
@@ -49,7 +49,6 @@ def centroids(image):
     label = me.label(image)
     regions = me.regionprops(label)
     count = 0
-    centroids = []
     for i in range(len(regions)):
         if (regions[i].area > 10000):
             count = count + 1
