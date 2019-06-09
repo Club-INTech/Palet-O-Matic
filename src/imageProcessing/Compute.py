@@ -22,28 +22,19 @@ def time_it(func):
 
 
 @time_it
-def compute_red(coordonnee, child_conn, image_palet):
-    image_palets_rouge = io.imread(image_palet)
-    # os.path.join(skimage.data_dir, "/home/yousra/2A/Cassiopée/Palet-O-Matic/tmp/image_palets_yellow.jpg"))
-    traitrouge = Traitement_Rouge(image_palets_rouge, True)
+def compute_red(coordonnee, child_conn, traitrouge):
     traitrouge.run()
     child_conn.send(centroids(redresser(traitrouge.image_rouge, coordonnee)))
 
 
 @time_it
-def compute_blue(coordonnee, child_conn, image_palet):
-    image_palets_rouge = io.imread(image_palet)
-    # os.path.join(skimage.data_dir, "/home/yousra/2A/Cassiopée/Palet-O-Matic/tmp/image_palets_yellow.jpg"))
-    traitbleu = Traitement_Bleu(image_palets_rouge)
+def compute_blue(coordonnee, child_conn, traitbleu):
     traitbleu.run()
     child_conn.send(centroids(redresser(traitbleu.image_bleu, coordonnee)))
 
 
 @time_it
-def compute_vert(coordonnee, child_conn, image_palet):
-    image_palets_rouge = io.imread(image_palet)
-    # os.path.join(skimage.data_dir, "/home/yousra/2A/Cassiopée/Palet-O-Matic/tmp/image_palets_yellow.jpg"))
-    traitvert = Traitement_Vert(image_palets_rouge)
+def compute_vert(coordonnee, child_conn, traitvert):
     traitvert.run()
     child_conn.send(centroids(redresser(traitvert.image_vert, coordonnee)))
 
@@ -63,15 +54,21 @@ def compute_redressement(rouge):
 
 def compute(coordonnee, image_palet, table, test):
     parent_conn, child_conn = Pipe()
-    p_red = Process(target=compute_red, args=(coordonnee, child_conn, image_palet))
+    image_palets_rouge = io.imread(image_palet)
+    traitrouge = Traitement_Rouge(image_palets_rouge, True)
+    p_red = Process(target=compute_red, args=(coordonnee, child_conn, traitrouge))
     p_red.start()
 
     parent_conn_b, child_conn_b = Pipe()
-    p_blue = Process(target=compute_blue, args=(coordonnee, child_conn_b, image_palet))
+    image_palets_bleu = io.imread(image_palet)
+    traitbleu = Traitement_Bleu(image_palets_bleu)
+    p_blue = Process(target=compute_blue, args=(coordonnee, child_conn_b, traitbleu))
     p_blue.start()
 
     parent_conn_v, child_conn_v = Pipe()
-    p_green = Process(target=compute_vert, args=(coordonnee, child_conn_v, image_palet))
+    image_palets_vert = io.imread(image_palet)
+    traitvert = Traitement_Vert(image_palets_vert)
+    p_green = Process(target=compute_vert, args=(coordonnee, child_conn_v, traitvert))
     p_green.start()
 
     p_red.join()
