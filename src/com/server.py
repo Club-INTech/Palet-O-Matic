@@ -8,7 +8,7 @@ class ServerThread(threading.Thread):
 
     def __init__(self):
         threading.Thread.__init__(self)
-        self.ip = "192.168.12.7"
+        self.ip = "192.168.12.12"
         self.port = 42111
         self.connections = []
         self.tcpsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
