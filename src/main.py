@@ -15,10 +15,6 @@ input("prendre photo recalage ?")
 
 camera.take_picture_recalage
 
-input("prendre photo palet ?")
-
-camera.take_picture_palet
-
 input("lancement !")
 
 server = ServerThread()

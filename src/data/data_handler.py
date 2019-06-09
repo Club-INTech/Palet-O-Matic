@@ -41,7 +41,8 @@ class DataHandler(threading.Thread):
         if self.match_commence:
             compute(self.coordonee, self.camera.get_picture_palet, self.table)
             self.notify_pallet_list()
-        else :
+        else:
+            self.camera.take_picture_palet
             self.coordonee = compute_redressement(self.camera.get_picture_recalage)
 
     @property
