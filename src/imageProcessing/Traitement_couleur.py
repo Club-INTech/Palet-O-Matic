@@ -43,7 +43,7 @@ class Traitement_couleur():
     def filtre_otsu(self, im_grey):
         "Filtre otsu sur une image, cette fonction retroune une image en noir et en blanc "
         val = filters.threshold_otsu(im_grey)
-        print(val)
+        print("valeur filtrage", val)
         image_2 = im_grey.copy()
         mask_1 = image_2 > val
         mask_2 = image_2 < val
