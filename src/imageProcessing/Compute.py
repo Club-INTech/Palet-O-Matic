@@ -25,19 +25,25 @@ def time_it(func):
 @time_it
 def compute_red(coordonnee, child_conn, traitrouge, redtab):
     traitrouge.run()
+    print("palets rouges : ", redtab)
     centroids(redresser(traitrouge.image_rouge, coordonnee), redtab)
+    print("palets rouges : ", redtab)
 
 
 @time_it
 def compute_blue(coordonnee, child_conn, traitbleu, bluetab):
     traitbleu.run()
+    print("palet bleu : ", bluetab)
     centroids(redresser(traitbleu.image_bleu, coordonnee), bluetab)
+    print("palet bleu : ", bluetab)
 
 
 @time_it
 def compute_vert(coordonnee, child_conn, traitvert, greentab):
     traitvert.run()
+    print("palet vert : ", greentab)
     centroids(redresser(traitvert.image_vert, coordonnee), greentab)
+    print("palet vert : ", greentab)
 
 
 @time_it
