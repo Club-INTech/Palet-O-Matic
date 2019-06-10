@@ -1,5 +1,5 @@
 import os
-from multiprocessing import Pipe, Process
+from multiprocessing import Pipe, Process, Array
 
 import skimage
 from skimage import io
@@ -57,21 +57,21 @@ def compute(coordonnee, image_palet, table, test):
     parent_conn, child_conn = Pipe()
     image_palets_rouge = io.imread(image_palet)
     traitrouge = Traitement_Rouge(image_palets_rouge, True)
-    redtab = []
+    redtab = Array('i', 2)
     p_red = Process(target=compute_red, args=(coordonnee, child_conn, traitrouge, redtab))
     p_red.start()
 
     parent_conn_b, child_conn_b = Pipe()
     image_palets_bleu = io.imread(image_palet)
     traitbleu = Traitement_Bleu(image_palets_bleu)
-    bluetab = []
+    bluetab = Array('i', 2)
     p_blue = Process(target=compute_blue, args=(coordonnee, child_conn_b, traitbleu, bluetab))
     p_blue.start()
 
     parent_conn_v, child_conn_v = Pipe()
     image_palets_vert = io.imread(image_palet)
     traitvert = Traitement_Vert(image_palets_vert)
-    greentab = []
+    greentab = Array('i', 2)
     p_green = Process(target=compute_vert, args=(coordonnee, child_conn_v, traitvert, greentab))
     p_green.start()
 
@@ -104,13 +104,13 @@ def compute(coordonnee, image_palet, table, test):
         if COULEUR == "purple":
             table.purple_chaos[0].x, table.purple_chaos[0].y = red[0][0], red[0][1]
             table.purple_chaos[1].x, table.purple_chaos[1].y = red[1][0], red[1][1]
-            table.purple_chaos[2].x, table.purple_chaos[2].y =  green[0][0], green[0][1]
+            table.purple_chaos[2].x, table.purple_chaos[2].y = green[0][0], green[0][1]
             table.purple_chaos[3].x, table.purple_chaos[3].y = blue[0][0], blue[0][1]
 
-        else :
+        else:
             table.yellow_chaos[0].x, table.yellow_chaos[0].y = red[0][0], red[0][1]
             table.yellow_chaos[1].x, table.yellow_chaos[1].y = red[1][0], red[1][1]
-            table.yellow_chaos[2].x, table.yellow_chaos[2].y =  green[0][0], green[0][1]
+            table.yellow_chaos[2].x, table.yellow_chaos[2].y = green[0][0], green[0][1]
             table.yellow_chaos[3].x, table.yellow_chaos[3].y = blue[0][0], blue[0][1]
 
 
