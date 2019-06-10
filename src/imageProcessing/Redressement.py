@@ -54,7 +54,7 @@ def centroids(image, centroids):
             count = count + 1
             x, y = regions[i].centroid
             if x > 200 and x <900:
-                centroids.append((x, y))
+                centroids.append([x, y])
                 if DEBUG_PLOT:
                     x_draw, y_draw = dr.circle(x, y, 20)
                     print(centroids)

@@ -102,6 +102,6 @@ def compute(coordonnee, image_palet, table, test):
     if not test:
         table.purple_chaos[0].x, table.purple_chaos[0].y = red[0][0], red[0][1]
         table.purple_chaos[1].x, table.purple_chaos[1].y = red[1][0], red[1][1]
-        table.purple_chaos[2].x, table.purple_chaos[2].y = green[0], green[1]
-        table.purple_chaos[3].x, table.purple_chaos[3].y = blue[0], blue[1]
+        table.purple_chaos[2].x, table.purple_chaos[2].y = green[0][0], green[0][1]
+        table.purple_chaos[3].x, table.purple_chaos[3].y = blue[0][0], blue[0][1]
 
