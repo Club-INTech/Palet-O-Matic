@@ -25,19 +25,19 @@ def time_it(func):
 @time_it
 def compute_red(coordonnee, child_conn, traitrouge, redtab):
     traitrouge.run()
-    child_conn.send(centroids(redresser(traitrouge.image_rouge, coordonnee), redtab))
+    child_conn.send(centroids(redresser(traitrouge.image_rouge, coordonnee)))
 
 
 @time_it
 def compute_blue(coordonnee, child_conn, traitbleu, bluetab):
     traitbleu.run()
-    child_conn.send(centroids(redresser(traitbleu.image_bleu, coordonnee), bluetab))
+    child_conn.send(centroids(redresser(traitbleu.image_bleu, coordonnee)))
 
 
 @time_it
 def compute_vert(coordonnee, child_conn, traitvert, greentab):
     traitvert.run()
-    child_conn.send(centroids(redresser(traitvert.image_vert, coordonnee), greentab))
+    child_conn.send(centroids(redresser(traitvert.image_vert, coordonnee)))
 
 
 @time_it
