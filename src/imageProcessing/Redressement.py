@@ -50,11 +50,11 @@ def centroids(image, centroids):
     regions = me.regionprops(label)
     count = 0
     for i in range(len(regions)):
-        if (regions[i].area > 10000):
+        if regions[i].area > 10000:
             count = count + 1
             x, y = regions[i].centroid
-            if x > 200 and x <900:
-                centroids[i] = (x, y)
+            if x > 200 and x < 900:
+                centroids[i], centroids[i+2] = x, y
                 if DEBUG_PLOT:
                     x_draw, y_draw = dr.circle(x, y, 20)
                     print(centroids)
