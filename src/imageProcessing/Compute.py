@@ -5,6 +5,7 @@ import skimage
 from skimage import io
 from time import time, gmtime, strftime
 
+from config import COULEUR
 from imageProcessing.Redressement import centroids, redresser, changement_repere
 from imageProcessing.Traitement_bleu import Traitement_Bleu
 from imageProcessing.Traitement_rouge import Traitement_Rouge
@@ -103,12 +104,13 @@ def compute(coordonnee, image_palet, table, test):
         if COULEUR == "purple":
             table.purple_chaos[0].x, table.purple_chaos[0].y = red[0][0], red[0][1]
             table.purple_chaos[1].x, table.purple_chaos[1].y = red[1][0], red[1][1]
-            table.purple_chaos[2].x, table.purple_chaos[2].y = green[0], green[1]
-            table.purple_chaos[3].x, table.purple_chaos[3].y = blue[0], blue[1]
+            table.purple_chaos[2].x, table.purple_chaos[2].y =  green[0][0], green[0][1]
+            table.purple_chaos[3].x, table.purple_chaos[3].y = blue[0][0], blue[0][1]
 
         else :
             table.yellow_chaos[0].x, table.yellow_chaos[0].y = red[0][0], red[0][1]
             table.yellow_chaos[1].x, table.yellow_chaos[1].y = red[1][0], red[1][1]
-            table.yellow_chaos[2].x, table.yellow_chaos[2].y = green[0], green[1]
-            table.yellow_chaos[3].x, table.yellow_chaos[3].y = blue[0], blue[1]
+            table.yellow_chaos[2].x, table.yellow_chaos[2].y =  green[0][0], green[0][1]
+            table.yellow_chaos[3].x, table.yellow_chaos[3].y = blue[0][0], blue[0][1]
+
 
