@@ -4,13 +4,19 @@ from multiprocessing import Pipe, Process
 import skimage
 from skimage import io
 from time import time, gmtime, strftime
+import skimage.draw as dr
+import matplotlib.pyplot as plt
 
+from config import DEMO
 from imageProcessing.Redressement import centroids, redresser, changement_repere
 from imageProcessing.Traitement_bleu import Traitement_Bleu
 from imageProcessing.Traitement_rouge import Traitement_Rouge
 from imageProcessing.Traitement_vert import Traitement_Vert
 
 
+centroids_red = []
+centroids_bleus = []
+centroids_verts = []
 def time_it(func):
     def wrapper(*args, **kwargs):
         start = time()
@@ -27,7 +33,8 @@ def compute_red(coordonnee, child_conn, image_palet):
     # os.path.join(skimage.data_dir, "/home/yousra/2A/Cassiopée/Palet-O-Matic/tmp/image_palets_yellow.jpg"))
     traitrouge = Traitement_Rouge(image_palets_rouge, True)
     traitrouge.run()
-    child_conn.send(centroids(redresser(traitrouge.image_rouge, coordonnee)))
+    centroids_red = centroids(redresser(traitrouge.image_rouge, coordonnee))
+    child_conn.send(centroids_red)
 
 
 @time_it
@@ -36,7 +43,8 @@ def compute_blue(coordonnee, child_conn, image_palet):
     # os.path.join(skimage.data_dir, "/home/yousra/2A/Cassiopée/Palet-O-Matic/tmp/image_palets_yellow.jpg"))
     traitbleu = Traitement_Bleu(image_palets_rouge)
     traitbleu.run()
-    child_conn.send(centroids(redresser(traitbleu.image_bleu, coordonnee)))
+    centroids_bleus = centroids(redresser(traitbleu.image_bleu, coordonnee))
+    child_conn.send(centroids_bleus)
 
 
 @time_it
@@ -45,7 +53,25 @@ def compute_vert(coordonnee, child_conn, image_palet):
     # os.path.join(skimage.data_dir, "/home/yousra/2A/Cassiopée/Palet-O-Matic/tmp/image_palets_yellow.jpg"))
     traitvert = Traitement_Vert(image_palets_rouge)
     traitvert.run()
-    child_conn.send(centroids(redresser(traitvert.image_vert, coordonnee)))
+    centroids_verts = centroids(redresser(traitvert.image_vert, coordonnee))
+    child_conn.send(centroids_verts)
+
+def demonstration(image_org, coord):
+    image = redresser(image_org, coord)
+    for point in centroids_red:
+        x, y = point[0], point[1]
+        x_cent, y_cent = dr.circle(x, y, 10)
+        image[x_cent, y_cent] = [255, 0, 0]
+    for point in centroids_bleus:
+        x, y = point[0], point[1]
+        x_cent, y_cent = dr.circle(x, y, 10)
+        image[x_cent, y_cent] = [0, 255, 0]
+    for point in centroids_verts:
+        x, y = point[0], point[1]
+        x_cent, y_cent = dr.circle(x, y, 10)
+        image[x_cent, y_cent] = [0, 0, 255]
+
+
 
 
 @time_it
@@ -88,3 +114,8 @@ def compute(image, image_palet):
     print("R : positions sur la table en mm", changement_repere(red_position))
     print("B : positions sur la table en mm", changement_repere(blue_position))
     print("V : positions sur la table en mm", changement_repere(green_position))
+
+    if DEMO :
+        demonstration(image_palet, rouge.coordonnee)
+        io.imshow(image_palet)
+        plt.show()

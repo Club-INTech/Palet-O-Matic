@@ -2,8 +2,9 @@ COULEUR = "purple"
 # COULEUR = "yellow"
 
 # Affichage du debug.
-DEBUG = True
-DEBUG_PLOT = True
+DEBUG = False
+DEBUG_PLOT = False
+DEMO       = False
 
 COTE_CALE_MM = 400
 COTE_CALE_PX = 1080
