@@ -64,3 +64,12 @@ class Traitement_couleur():
         # On met à noir les pixels respectant le mask
         image_2[mask_2] = 0
         return image_2
+
+    def traitement_couleur(self, image_orig, couleur):
+        n = image_orig.shape[1]
+        p = image_orig.shape[0]
+        im = img_as_uint(np.zeros((p, n)))
+        for i in range(p):
+            for j in range(n):
+                im[i, j] = max(image_orig[i, j, couleur] - 0.5 * (image_orig[i, j, (couleur + 1) % 3] + image_orig[i, j, (couleur + 2) % 3]), 0)
+        return im

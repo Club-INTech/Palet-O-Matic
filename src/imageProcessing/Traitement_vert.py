@@ -26,6 +26,7 @@ class Traitement_Vert(Traitement_couleur):
         if DEBUG:
             print("fin traitement vert")
 
+
     def traitement_vert_final(self, im):
         "Regrougement des différentes méthodes de traitements"
         image_vert = self.traitement_vert(im)
@@ -41,7 +42,13 @@ class Traitement_Vert(Traitement_couleur):
         im_in_seuillee = self.filtre_otsu(im_in_grey)  #: utiliser le filtre otsu pour avoir une idée du seuil
         # + tracer l'histogramme
         # im_in_seuillee = filtrage_image(im_in_grey,70)
+        if DEBUG_PLOT :
+            io.imshow(im_in_seuillee)
+            plt.show()
         im_out = img_as_float(mo.remove_small_holes(im_in_seuillee, 10000))
+        if DEBUG_PLOT :
+            io.imshow(im_out)
+            plt.show()
         return im_out
 
     def opening_vert(self, im_in):
@@ -52,7 +59,7 @@ class Traitement_Vert(Traitement_couleur):
 
     def traitement_vert(self, image_orig):
         "Cette méthode regroupe les différents traitements qu'on fait pour isoler le canal vert"
-        mask2 = image_orig[:, :, 2] > 210
+        mask2 = image_orig[:, :, 2] > 230
         image_orig[mask2] = [0, 0, 0]
         if DEBUG_PLOT:
             io.imshow(image_orig)
@@ -81,4 +88,7 @@ class Traitement_Vert(Traitement_couleur):
                 if (im_grey[i][j] < val):
                     im_grey[i, j] = val
         return im_grey
+
+
+
 
