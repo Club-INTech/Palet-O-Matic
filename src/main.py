@@ -29,4 +29,5 @@ camera.take_picture_palet
 
 input("lancer compute")
 
+
 compute(camera.get_picture_recalage, camera.get_picture_palet)

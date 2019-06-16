@@ -1,11 +1,12 @@
 import os
 from multiprocessing import Pipe, Process
 
-import skimage
+from skimage.color import rgb2gray
 from skimage import io
 from time import time, gmtime, strftime
 import skimage.draw as dr
 import matplotlib.pyplot as plt
+
 
 from config import DEMO
 from imageProcessing.Redressement import centroids, redresser, changement_repere
@@ -14,9 +15,7 @@ from imageProcessing.Traitement_rouge import Traitement_Rouge
 from imageProcessing.Traitement_vert import Traitement_Vert
 
 
-centroids_red = []
-centroids_bleus = []
-centroids_verts = []
+
 def time_it(func):
     def wrapper(*args, **kwargs):
         start = time()
@@ -56,20 +55,24 @@ def compute_vert(coordonnee, child_conn, image_palet):
     centroids_verts = centroids(redresser(traitvert.image_vert, coordonnee))
     child_conn.send(centroids_verts)
 
-def demonstration(image_org, coord):
+def demonstration(image_org, coord, centroids_red, centroids_bleus, centroids_verts):
+    #image_org = rgb2gray(image_org)
     image = redresser(image_org, coord)
     for point in centroids_red:
         x, y = point[0], point[1]
         x_cent, y_cent = dr.circle(x, y, 10)
-        image[x_cent, y_cent] = [255, 0, 0]
+        image[x_cent, y_cent] = [0, 255, 255]
     for point in centroids_bleus:
         x, y = point[0], point[1]
         x_cent, y_cent = dr.circle(x, y, 10)
-        image[x_cent, y_cent] = [0, 255, 0]
+        image[x_cent, y_cent] = [255, 255, 0]
     for point in centroids_verts:
         x, y = point[0], point[1]
         x_cent, y_cent = dr.circle(x, y, 10)
-        image[x_cent, y_cent] = [0, 0, 255]
+        image[x_cent, y_cent] = [255, 0, 255]
+
+    io.imshow(image)
+    plt.show()
 
 
 
@@ -116,6 +119,8 @@ def compute(image, image_palet):
     print("V : positions sur la table en mm", changement_repere(green_position))
 
     if DEMO :
-        demonstration(image_palet, rouge.coordonnee)
+        image_palet = io.imread(image_palet)
+        demonstration(image_palet, rouge.coordonnee, red_position, blue_position, green_position)
         io.imshow(image_palet)
         plt.show()
+
