@@ -65,8 +65,8 @@ class Traitement_Bleu(Traitement_couleur):
 
     def removing_holes_bleu(self, im_in_grey):
         "Suppression des trous noirs dus au palets "
-        #im_in_seuillee = self.filtre_otsu(im_in_grey)
-        im_in_seuillee = self.filtrage_image(im_in_grey, 123)
+        im_in_seuillee = self.filtre_otsu(im_in_grey)
+        #im_in_seuillee = self.filtrage_image(im_in_grey, 123)
         im_out = img_as_float(mo.remove_small_holes(im_in_seuillee, 10000))
         return im_out
 
