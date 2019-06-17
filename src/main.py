@@ -14,6 +14,8 @@ os.system("sh src/direct.sh")
 input("filtre ajusté ? ")
 
 camera = Camera()
+data_handler = DataHandler(camera)
+
 
 input("prendre photo recalage ?")
 
@@ -30,4 +32,9 @@ camera.take_picture_palet
 input("lancer compute")
 
 
-compute(camera.get_picture_recalage, camera.get_picture_palet)
+compute(camera.get_picture_recalage, camera.get_picture_palet, data_handler)
+
+print(data_handler.table.to_json())
+
+server = ServerThread()
+server.run(data_handler)

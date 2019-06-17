@@ -8,7 +8,7 @@ import skimage.draw as dr
 import matplotlib.pyplot as plt
 
 
-from config import DEMO
+from config import DEMO, COULEUR
 from imageProcessing.Redressement import centroids, redresser, changement_repere
 from imageProcessing.Traitement_bleu import Traitement_Bleu
 from imageProcessing.Traitement_rouge import Traitement_Rouge
@@ -78,7 +78,7 @@ def demonstration(image_org, coord, centroids_red, centroids_bleus, centroids_ve
 
 
 @time_it
-def compute(image, image_palet):
+def compute(image, image_palet, data_handler):
 
     t1 = time()
 
@@ -114,11 +114,31 @@ def compute(image, image_palet):
     print("Le temps d'exécution avant un match", t2 - t1)
     print("Le temps d'exécution pendant un match", t3 - t2)
 
-    print("R : positions sur la table en mm", changement_repere(red_position))
-    print("B : positions sur la table en mm", changement_repere(blue_position))
-    print("V : positions sur la table en mm", changement_repere(green_position))
+    vert = changement_repere(green_position)
+    bleu = changement_repere(blue_position)
+    rouges = changement_repere(red_position)
 
-    if DEMO :
+    print("R : positions sur la table en mm", rouges)
+    print("B : positions sur la table en mm", bleu)
+    print("V : positions sur la table en mm", vert)
+
+    if COULEUR == "purple":
+        if rouges:
+            data_handler.table.purple_chaos[0].x, data_handler.table.purple_chaos[0].y = round(rouges[0][0]),\
+                                                                                         round(rouges[0][1])
+            data_handler.table.purple_chaos[1].x, data_handler.table.purple_chaos[1].y = round(rouges[1][0]), \
+                                                                                         round(rouges[1][1])
+        if vert:
+            data_handler.table.purple_chaos[2].x, data_handler.table.purple_chaos[2].y = round(vert[0][0]), round(vert[0][1])
+        if bleu:
+            data_handler.table.purple_chaos[3].x, data_handler.table.purple_chaos[3].y = round(bleu[0][0]), round(bleu[0][1])
+    else:
+        data_handler.table.yellow_chaos[0].x, data_handler.table.yellow_chaos[0].y = rouges[0][0], rouges[0][1]
+        data_handler.table.yellow_chaos[1].x, data_handler.table.yellow_chaos[1].y = rouges[1][0], rouges[1][1]
+        data_handler.table.yellow_chaos[2].x, data_handler.table.yellow_chaos[2].y = vert[0][0], vert[0][1]
+        data_handler.table.yellow_chaos[3].x, data_handler.table.yellow_chaos[3].y = bleu[0][0], bleu[0][1]
+
+    if DEMO:
         image_palet = io.imread(image_palet)
         demonstration(image_palet, rouge.coordonnee, red_position, blue_position, green_position)
         io.imshow(image_palet)

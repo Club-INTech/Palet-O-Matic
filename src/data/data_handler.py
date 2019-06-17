@@ -5,6 +5,7 @@ from imageProcessing import Traitement_bleu
 from imageProcessing import Traitement_vert
 from imageProcessing import Traitement_rouge
 
+
 class DataHandler(threading.Thread):
     """
     Processus qui s'occupe de mettre à jour les coordonnées des palets en appelant les méthodes du
@@ -29,30 +30,24 @@ class DataHandler(threading.Thread):
         for observer in self.__observers:
             observer.send_palet_list(self.table)
 
-    def image_processing(self):
-        """
-        Appelle les méthodes de imageProcessing et met à jour les palets.
-        Notifie les listener pour qu'ils envoient les infos aux robot
-        """
-        thread_rouge = Traitement_rouge(self.camera.picture, self.match_commence)
-        thread_bleu = Traitement_bleu(self.camera.picture)
-        thread_vert = Traitement_vert(self.camera.picture)
+    # def image_processing(self):
+    #     """
+    #     Appelle les méthodes de imageProcessing et met à jour les palets.
+    #     Notifie les listener pour qu'ils envoient les infos aux robot
+    #     """
+    #     thread_rouge = Traitement_rouge(self.camera.picture, self.match_commence)
+    #     thread_bleu = Traitement_bleu(self.camera.picture)
+    #     thread_vert = Traitement_vert(self.camera.picture)
+    #     if self.match_commence:
+    #         thread_bleu.start()
+    #         thread_vert.start()
+    #         thread_rouge.start()
+    #         self.notify_pallet_list()
+    #     else :
+    #         thread_rouge.start()
 
-
-        if self.match_commence:
-            thread_bleu.start()
-            thread_vert.start()
-            thread_rouge.start()
-            self.notify_pallet_list()
-        else :
-            thread_rouge.start()
-
-
-
-    @property
     def match_commence(self):
         return self.match_commence
 
-    @property
     def set_match_commence(self):
         self.match_commence = True
