@@ -2,11 +2,6 @@ import os
 from Camera import Camera
 from com.server import ServerThread
 from data.data_handler import DataHandler
-
-# server = ServerThread()
-# data_handler = DataHandler()
-#
-# server.run(data_handler)
 from imageProcessing.Compute import compute
 
 print("Ajuster le filtre polarisant")

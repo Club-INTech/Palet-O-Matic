@@ -9,7 +9,7 @@ class ServerThread(threading.Thread):
     def __init__(self):
         threading.Thread.__init__(self)
         self.ip = "127.0.0.1"
-        self.port = 1111
+        self.port = 42111
         self.connections = []
         self.tcpsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
