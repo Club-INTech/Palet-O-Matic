@@ -26,7 +26,10 @@ camera.take_picture_palet
 
 input("lancer compute")
 
+# image_cale = "/home/sam/INTech/Palet-O-Matic/tmp/2019-06-17_14:16:57.jpg"
+# image_palets = "/home/sam/INTech/Palet-O-Matic/tmp/2019-06-17_14:17:21.jpg"
 
+# compute(image_cale, image_palets, data_handler)
 compute(camera.get_picture_recalage, camera.get_picture_palet, data_handler)
 
 print(data_handler.table.to_json())

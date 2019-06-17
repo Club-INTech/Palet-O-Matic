@@ -124,14 +124,14 @@ def compute(image, image_palet, data_handler):
 
     if COULEUR == "purple":
         if rouges:
-            data_handler.table.purple_chaos[0].x, data_handler.table.purple_chaos[0].y = round(rouges[0][0]),\
-                                                                                         round(rouges[0][1])
-            data_handler.table.purple_chaos[1].x, data_handler.table.purple_chaos[1].y = round(rouges[1][0]), \
-                                                                                         round(rouges[1][1])
+            data_handler.table.purple_chaos[0].x, data_handler.table.purple_chaos[0].y = - int(round(rouges[0][0])),\
+                                                                                         int(round(rouges[0][1]))
+            data_handler.table.purple_chaos[1].x, data_handler.table.purple_chaos[1].y = - int(round(rouges[1][0])), \
+                                                                                         int(round(rouges[1][1]))
         if vert:
-            data_handler.table.purple_chaos[2].x, data_handler.table.purple_chaos[2].y = round(vert[0][0]), round(vert[0][1])
+            data_handler.table.purple_chaos[2].x, data_handler.table.purple_chaos[2].y = - int(round(vert[0][0])), int(round(vert[0][1]))
         if bleu:
-            data_handler.table.purple_chaos[3].x, data_handler.table.purple_chaos[3].y = round(bleu[0][0]), round(bleu[0][1])
+            data_handler.table.purple_chaos[3].x, data_handler.table.purple_chaos[3].y = - int(round(bleu[0][0])), int(round(bleu[0][1]))
     else:
         data_handler.table.yellow_chaos[0].x, data_handler.table.yellow_chaos[0].y = rouges[0][0], rouges[0][1]
         data_handler.table.yellow_chaos[1].x, data_handler.table.yellow_chaos[1].y = rouges[1][0], rouges[1][1]
