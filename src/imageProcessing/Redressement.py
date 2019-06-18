@@ -8,7 +8,7 @@ import skimage.draw as dr
 from skimage import transform as tf
 
 from config import COTE_CALE_MM, COTE_CALE_PX, X_CHAOS_YELLOW, COULEUR, X_CHAOS_PURPLE, Y_CHAOS_YELLOW, Y_CHAOS_PURPLE, \
-    DEBUG_PLOT, DEBUG
+    DEBUG_PLOT, DEBUG, DEMO, X_DEMO, Y_DEMO
 
 
 def px_to_mm(len_px):
@@ -29,6 +29,10 @@ def changement_repere(positions):
     positions_mm = []
     x_chaos = X_CHAOS_PURPLE if COULEUR is "purple" else X_CHAOS_YELLOW
     y_chaos = Y_CHAOS_PURPLE if COULEUR is "purple" else Y_CHAOS_YELLOW
+
+    if DEMO:
+        x_chaos = X_DEMO
+        y_chaos = Y_DEMO
 
     for x, y in positions:
         x, y = y, COTE_CALE_PX - x
