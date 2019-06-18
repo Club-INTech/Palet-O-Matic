@@ -109,6 +109,10 @@ def compute(image, image_palet, data_handler):
     p_green.join()
     green_position = parent_conn_v.recv()
 
+    p_red.join()
+    p_blue.join()
+    p_green.join()
+
     t3 = time()
 
     print("Le temps d'exécution avant un match", t2 - t1)
@@ -121,6 +125,15 @@ def compute(image, image_palet, data_handler):
     print("R : positions sur la table en mm", rouges)
     print("B : positions sur la table en mm", bleu)
     print("V : positions sur la table en mm", vert)
+
+    for v in vert:
+        if abs(round(v[0]) - round(bleu[0][0])) < 12:
+            vert.remove(v)
+
+    print("R : positions sur la table en mm", rouges)
+    print("B : positions sur la table en mm", bleu)
+    print("V : positions sur la table en mm", vert)
+
 
     if COULEUR == "purple":
         if rouges:
